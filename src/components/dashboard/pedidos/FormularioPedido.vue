@@ -116,13 +116,14 @@ const removeItem = (index: number) => {
 const submitOrder = async () => {
   try {
     pedido.value.items.forEach(async (item) => {
-      const res = (
+      const _res = (
         await api.post('cliente/pedido', {
           id_usuario: pedido.value.clientId,
           id_sabor: item.saborid,
           cantidad: item.cantidad
         })
       ).data
+      console.log(_res)
     })
     await saboresStore.fetchSabores()
     await cliente.update_pedidos()
