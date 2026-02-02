@@ -5,13 +5,13 @@ const clientStore = useClientStore()
 </script>
 
 <template>
-  <div v-if="clientStore.pedidos.length > 0" class="mb-8">
-    <h2 class="text-lg font-black text-gray-800 mb-4">Mis Pedidos</h2>
+  <div v-if="clientStore.pedidos.length > 0" class="mb-8 mt-4">
+    <h2 class="text-lg font-black text-gray-800 mb-4">Mis Pedidos - {{ clientStore.pedidos.length }}</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      <div v-for="pedido in clientStore.pedidos" :key="pedido.id" class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+      <div v-for="pedido in clientStore.pedidos.slice(0, 10)" :key="pedido.id" class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
         <div class="flex justify-between items-start mb-2">
           <div>
-            <p class="text-xs font-bold text-gray-500 uppercase">Pedido #{{ pedido.id }}</p>
+            <p class="text-xs font-bold text-gray-500 uppercase">Pedido #{{ pedido.venta }}</p>
             <p class="text-sm font-medium text-gray-800">{{ new Date(pedido.fecha).toLocaleDateString() }}</p>
           </div>
           <span

@@ -3,7 +3,7 @@ import { api } from '@api/axios'
 import { ref } from 'vue'
 
 export const useSaboresStore = defineStore('saboresStore', () => {
-  const sabores = ref<Array<any>>([])
+  const sabores = ref<Array<any>>()
   const isLoading = ref(false)
 
   const fetchSabores = async () => {

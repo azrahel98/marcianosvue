@@ -115,8 +115,8 @@ const handleLogin = async () => {
 
     if (data.token) {
       localStorage.setItem('jwt', data.token)
-      // Redirigir al dashboard o home
-      router.push('/')
+
+      await router.push({ name: 'dashboard' })
     } else {
       apiError.value = 'No se recibió el token de acceso'
     }

@@ -26,19 +26,19 @@ const menuItems = ref<MenuItem[]>([
   {
     title: 'Mi Dashboard',
     icon: Icons.LayoutDashboard,
-    to: '/dashboard/cliente'
+    to: '/'
   },
   {
     title: 'Mis Pedidos',
     icon: Icons.ShoppingBag,
-    to: '/dashboard/cliente/orders',
+    to: '/',
     badge: 3,
     badgeColor: 'bg-pink-500 text-white'
   },
   {
     title: 'Recompensas',
     icon: Icons.Gift,
-    to: '/dashboard/cliente/rewards'
+    to: '/'
   },
   {
     title: 'Gestionar Pedidos',
@@ -53,7 +53,7 @@ const menuItems = ref<MenuItem[]>([
       {
         title: 'Perfil',
         icon: Icons.User, // reusing user icon or dot
-        to: '/dashboard/cliente/profile'
+        to: '/'
       }
     ]
   }
@@ -121,16 +121,9 @@ const isActive = (item: MenuItem) => {
               <component :is="item.icon" class="w-4 h-4 shrink-0" />
               <span class="flex-1 truncate">{{ item.title }}</span>
 
-              <!-- Badge -->
-              <span v-if="item.badge" class="px-1.5 py-0.5 rounded-full text-[10px] font-bold" :class="item.badgeColor || 'bg-gray-100 text-gray-600'">
-                {{ item.badge }}
-              </span>
-
-              <!-- Chevron for submenu -->
               <component v-if="item.children" :is="item.isOpen ? Icons.ChevronDown : Icons.ChevronRight" class="w-4 h-4 text-gray-400" />
             </div>
 
-            <!-- Submenu -->
             <ul v-if="item.children && item.isOpen" class="ml-4 mt-1 pl-2 border-l border-gray-100 flex flex-col gap-1">
               <li v-for="(child, childIndex) in item.children" :key="childIndex">
                 <router-link
