@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { userStore } from '@store/user'
-import { useSaboresStore, type Sabor } from '@store/sabores'
+import { useSaboresStore } from '@store/sabores'
 
 const user = userStore()
 const saboresStore = useSaboresStore()
@@ -44,19 +44,9 @@ const handleCreateSabor = async () => {
 const handleUpdateStock = async (id: number) => {
   const amount = stockInputs[id]
   if (!amount || amount <= 0) return
-
-  try {
-    await saboresStore.updateStock({
-      id_sabor: id,
-      cantidad_nueva: amount
-    })
-    stockInputs[id] = 0
-  } catch (error) {
-    console.error('Error al actualizar stock:', error)
-  }
 }
 
-const isStockInputInvalid = (sabor: Sabor) => {
+const isStockInputInvalid = (sabor: any) => {
   if (!sabor.id) return true
   const val = stockInputs[sabor.id]
   return !val || val <= 0
