@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const SERVER = 'http://127.0.0.1:8000'
+const SERVER = 'https://azrahel98-apimarciano-58.deno.dev'
 
 const api = axios.create({
   baseURL: SERVER,
