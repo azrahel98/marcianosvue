@@ -17,23 +17,8 @@ const isModalOpen = ref(false)
 
 const isLoading = ref(false)
 
-const fetchData = async () => {
-  try {
-    isLoading.value = true
-    await saboresStore.fetchSabores()
-    if (!user.isAdmin) {
-      await clientStore.update_pedidos()
-    }
-    isModalOpen.value = false
-  } catch (error) {
-    console.error(error)
-  } finally {
-    isLoading.value = false
-  }
-}
-
 onMounted(async () => {
-  await fetchData()
+  await clientStore.fetchClientData()
 })
 </script>
 
@@ -86,7 +71,7 @@ onMounted(async () => {
       <h3 class="text-base font-bold text-gray-800">Registrar Nuevo Pedido</h3>
     </template>
     <template #body>
-      <FormularioPedido @close="isModalOpen = false" @refresh="async () => await fetchData()" />
+      <FormularioPedido @close="isModalOpen = false" @refresh="clientStore.update_pedidos()" />
     </template>
   </Modal>
 </template>

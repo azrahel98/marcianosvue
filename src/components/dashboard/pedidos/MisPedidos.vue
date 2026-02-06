@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useClientStore } from '@store/cliente'
+import { format } from 'date-fns'
 
 const clientStore = useClientStore()
 </script>
@@ -8,11 +9,11 @@ const clientStore = useClientStore()
   <div v-if="clientStore.pedidos.length > 0" class="mb-8 mt-4">
     <h2 class="text-lg font-black text-gray-800 mb-4">Mis Pedidos - {{ clientStore.pedidos.length }}</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      <div v-for="pedido in clientStore.pedidos.slice(0, 10)" :key="pedido.id" class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+      <div v-for="pedido in clientStore.pedidos" :key="pedido.id_pedido" class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
         <div class="flex justify-between items-start mb-2">
           <div>
-            <p class="text-xs font-bold text-gray-500 uppercase">Pedido #{{ pedido.venta }}</p>
-            <p class="text-sm font-medium text-gray-800">{{ new Date(pedido.fecha).toLocaleDateString() }}</p>
+            <p class="text-xs font-bold text-gray-500 uppercase">Pedido #{{ pedido.id_pedido }}</p>
+            <p class="text-sm font-medium text-gray-800">{{ format(pedido.fecha, 'dd/MM/yyyy') }}</p>
           </div>
           <span
             class="px-2 py-1 text-[10px] font-bold rounded-full uppercase tracking-wider"
@@ -25,23 +26,15 @@ const clientStore = useClientStore()
             {{ pedido.estado }}
           </span>
         </div>
-        <div class="mt-3 pt-3 border-t border-gray-50 flex justify-between items-center">
-          <span class="text-xs text-gray-500 font-medium">Nombre</span>
-          <span class="text-xs font-medium text-gray-800"> {{ pedido.marciano }} </span>
-        </div>
-        <div class="border-t border-gray-50 flex justify-between items-center">
-          <span class="text-xs text-gray-500 font-medium">Cantidad</span>
-          <span class="text-xs font-medium text-gray-800"> {{ pedido.cantidad }} </span>
-        </div>
 
         <div class="border-t border-gray-50 flex justify-between items-center">
-          <span class="text-xs text-gray-500 font-medium">Precio</span>
-          <span class="text-xs font-medium text-gray-800"> {{ pedido.precio }} </span>
+          <span class="text-xs text-gray-500 font-medium">Cantidad</span>
+          <span class="text-xs font-medium text-gray-800"> {{ pedido.detalle.length }} </span>
         </div>
 
         <div class="border-t border-gray-50 flex justify-between items-center">
           <span class="text-xs text-gray-500 font-medium">Total</span>
-          <span class="text-base font-black text-gray-800">S/ {{ pedido.precio * pedido.cantidad }} </span>
+          <span class="text-base font-black text-gray-800">S/ {{ pedido.total_pedido }} </span>
         </div>
       </div>
     </div>

@@ -10,8 +10,8 @@
           class="h-9 flex-1 rounded-lg bg-gray-50 border border-gray-200 px-3 text-xs focus:border-cyan-500 focus:ring-1 focus:ring-cyan-200 outline-none"
         >
           <option :value="0" disabled>Selecciona un sabor...</option>
-          <option v-for="sabor in saboresStore.sabores?.filter((s: any) => s.stock > 0)" :key="sabor.id_sabor" :value="sabor.id_sabor" :disabled="selectedSabores.includes(sabor.id_sabor)">
-            {{ sabor.nombre }} (S/ {{ sabor.precio }})
+          <option v-for="sabor in saboresStore.sabores" :key="sabor.id_sabor" :value="sabor.id_sabor" :disabled="sabor.stock === 0 || selectedSabores.includes(sabor.id_sabor)">
+            {{ sabor.nombre }} (S/ {{ sabor.precio }}) {{ sabor.stock === 0 ? '- Agotado' : '' }}
           </option>
         </select>
 
@@ -54,7 +54,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { userStore } from '@store/user'
 import { useSaboresStore } from '@store/sabores'
 import { api } from '@api/axios'
@@ -63,8 +63,14 @@ const emit = defineEmits(['refresh', 'close'])
 
 const user = userStore()
 
-const selectedSabores = computed(() => pedido.value.items.map((item) => item.saborid))
+// Access the store directly
 const saboresStore = useSaboresStore()
+// We'll use the store's state, but ensure we fetch fresh data on mount
+onMounted(() => {
+  saboresStore.fetchSabores()
+})
+
+const selectedSabores = computed(() => pedido.value.items.map((item) => item.saborid))
 
 const marciano = ref({
   saborid: 0,
@@ -95,7 +101,15 @@ const updateMarcianoInfo = () => {
 }
 
 const addItem = () => {
+  // Check if trying to add an item with valid ID
   if (marciano.value.saborid !== 0) {
+    // Optional: Double check stock just in case (though UI disables it)
+    const selected = saboresStore.sabores?.find((s: any) => s.id_sabor === marciano.value.saborid)
+    if (selected && selected.stock <= 0) {
+      alert('Producto agotado')
+      return
+    }
+
     // Usamos spread para romper la reactividad y que no se sigan vinculando
     pedido.value.items.push({ ...marciano.value })
 
@@ -120,23 +134,28 @@ const submitOrder = async () => {
 
   try {
     loading.value = true
+    isSubmittingOrder.value = true
 
-    const solicitudes = pedido.value.items.map((item) =>
-      api.post('cliente/pedido', {
-        id_usuario: pedido.value.clientId,
-        id_sabor: item.saborid,
+    // Prepare payload for /cliente/comprar
+    const payload = {
+      userId: user.id,
+      productos: pedido.value.items.map((item) => ({
+        idSabor: item.saborid,
         cantidad: item.cantidad
-      })
-    )
+      }))
+    }
 
-    await Promise.all(solicitudes)
+    await api.post('/cliente/comprar', payload)
 
     emit('refresh')
+    // Close modal or reset form
+    emit('close')
   } catch (error) {
-    alert((error as Error).message)
-    console.log(error)
+    alert((error as Error).message || 'Error al procesar el pedido')
+    console.error(error)
   } finally {
     loading.value = false
+    isSubmittingOrder.value = false
   }
 }
 </script>

@@ -7,6 +7,7 @@
     "npm:@vue/tsconfig@~0.8.1": "0.8.1_typescript@5.9.3_vue@3.5.27__typescript@5.9.3",
     "npm:autoprefixer@^10.4.24": "10.4.24_postcss@8.5.6",
     "npm:axios@^1.13.4": "1.13.4",
+    "npm:date-fns@^4.1.0": "4.1.0",
     "npm:jwt-decode@4": "4.0.0",
     "npm:pinia@^3.0.4": "3.0.4_typescript@5.9.3_vue@3.5.27__typescript@5.9.3",
     "npm:postcss@^8.5.6": "8.5.6",
@@ -835,6 +836,9 @@
     "csstype@3.2.3": {
       "integrity": "sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ=="
     },
+    "date-fns@4.1.0": {
+      "integrity": "sha512-Ukq0owbQXxa/U3EGtsdVBkR1w7KOQ5gIBqdH2hkvknzZPYvBxb/aa6E8L7tmjFtkwZBu3UXBbjIgPo/Ez4xaNg=="
+    },
     "delayed-stream@1.0.0": {
       "integrity": "sha512-ZySD7Nf91aLB0RxL4KGrKHBXl7Eds1DAmEdcoVawXnLD7SDhpNgtuII2aAkg7a7QS41jxPSZ17p4VdGnMHk3MQ=="
     },
@@ -1458,6 +1462,7 @@
         "npm:@vue/tsconfig@~0.8.1",
         "npm:autoprefixer@^10.4.24",
         "npm:axios@^1.13.4",
+        "npm:date-fns@^4.1.0",
         "npm:jwt-decode@4",
         "npm:pinia@^3.0.4",
         "npm:postcss@^8.5.6",

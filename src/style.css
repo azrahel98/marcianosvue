@@ -124,4 +124,13 @@
   body {
     @apply bg-background text-foreground;
   }
+  .nav-item {
+    @apply flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors;
+  }
+  .nav-item.active {
+    @apply bg-pink-50 text-pink-600;
+  }
+  .mobile-item {
+    @apply flex flex-col items-center justify-center w-full h-full text-gray-400 gap-1 text-[10px] font-medium;
+  }
 }
