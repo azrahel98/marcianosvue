@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { useRouter, useRoute } from 'vue-router'
-import { useUIStore } from '@store/ui'
+// import { useUIStore } from '@store/ui'
 import * as Icons from '@comp/icons'
 import { userStore } from '@store/user'
 
 const router = useRouter()
 const route = useRoute()
-const uiStore = useUIStore()
+// const uiStore = useUIStore()
 const user = userStore()
 
 // Solo funciones de utilidad

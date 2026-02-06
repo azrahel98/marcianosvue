@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { userStore } from '@store/user'
-import { useSaboresStore } from '@store/sabores'
+// import { useSaboresStore } from '@store/sabores'
 import { useClientStore } from '@store/cliente'
 import Modal from '@comp/common/Modal.vue'
 
@@ -10,7 +10,7 @@ import GestionSabores from '@comp/dashboard/pedidos/GestionSabores.vue'
 import FormularioPedido from '@comp/dashboard/pedidos/FormularioPedido.vue'
 
 const user = userStore()
-const saboresStore = useSaboresStore()
+// const saboresStore = useSaboresStore()
 const clientStore = useClientStore()
 
 const isModalOpen = ref(false)
