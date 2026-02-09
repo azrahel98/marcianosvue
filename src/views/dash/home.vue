@@ -4,6 +4,7 @@ import UltimasCompras from '@comp/dashboard/UltimasCompras.vue'
 import { onMounted } from 'vue'
 import { useClientStore } from '@store/cliente'
 import { userStore } from '@store/user'
+import Main from '@comp/dashboard/admin/main.vue'
 
 const clientStore = useClientStore()
 const user = userStore()
@@ -13,7 +14,8 @@ onMounted(async () => {
 </script>
 
 <template>
-  <main class="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+  <Main v-if="user.isAdmin" />
+  <main v-else class="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
     <div class="mb-6">
       <h1 class="text-3xl font-black bg-linear-to-r from-pink-600 to-cyan-600 bg-clip-text text-transparent">¡Hola, {{ user.nombre }}!</h1>
       <p class="text-gray-600 mt-1 text-sm font-medium">✨ Tu día es más dulce hoy.</p>

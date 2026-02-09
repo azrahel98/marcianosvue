@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const SERVER = 'https://azrahel98-apimarciano-58.deno.dev'
+const SERVER = 'https://api.odeploy.work'
 
 const api = axios.create({
   baseURL: SERVER,

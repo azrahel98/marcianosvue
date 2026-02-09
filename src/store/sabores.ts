@@ -28,10 +28,25 @@ export const useSaboresStore = defineStore('saboresStore', () => {
     }
   }
 
+  const registrarMovimiento = async (idSabor: number, cantidad: number, tipo: string) => {
+    try {
+      await api.post('/pedidos/movimiento', {
+        idSabor,
+        cantidad,
+        tipo
+      })
+      await fetchSabores()
+    } catch (error) {
+      console.error('Error recording movement:', error)
+      throw error
+    }
+  }
+
   return {
     sabores,
     isLoading,
     fetchSabores,
-    createSabor
+    createSabor,
+    registrarMovimiento
   }
 })
