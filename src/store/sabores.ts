@@ -10,7 +10,7 @@ export const useSaboresStore = defineStore('saboresStore', () => {
     isLoading.value = true
     try {
       const { data } = await api.get('/sabor')
-      sabores.value = data
+      sabores.value = await data
     } catch (error) {
       console.error('Error fetching sabores:', error)
     } finally {

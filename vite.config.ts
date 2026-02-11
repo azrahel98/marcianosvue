@@ -1,27 +1,28 @@
-import { defineConfig } from "vite";
-import vue from "@vitejs/plugin-vue";
-import path from "node:path";
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+import path from 'node:path'
 
-import tailwindcss from "@tailwindcss/vite";
+import tailwindcss from '@tailwindcss/vite'
+import vueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [vue(), tailwindcss()],
+  plugins: [vue(), tailwindcss(), vueDevTools()],
   resolve: {
     alias: [
-      { find: "@views", replacement: path.resolve(__dirname, "./src/views") },
+      { find: '@views', replacement: path.resolve(__dirname, './src/views') },
       {
-        find: "@router",
-        replacement: path.resolve(__dirname, "./src/router/"),
+        find: '@router',
+        replacement: path.resolve(__dirname, './src/router/')
       },
       {
-        find: "@comp",
-        replacement: path.resolve(__dirname, "./src/components"),
+        find: '@comp',
+        replacement: path.resolve(__dirname, './src/components')
       },
-      { find: "@lib", replacement: path.resolve(__dirname, "./utils/") },
-      { find: "@api", replacement: path.resolve(__dirname, "./src/api/") },
-      { find: "@store", replacement: path.resolve(__dirname, "./src/store/") },
-      { find: "@tools", replacement: path.resolve(__dirname, "./src/tools/") },
-    ],
-  },
-});
+      { find: '@lib', replacement: path.resolve(__dirname, './utils/') },
+      { find: '@api', replacement: path.resolve(__dirname, './src/api/') },
+      { find: '@store', replacement: path.resolve(__dirname, './src/store/') },
+      { find: '@tools', replacement: path.resolve(__dirname, './src/tools/') }
+    ]
+  }
+})

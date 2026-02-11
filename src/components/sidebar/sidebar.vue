@@ -19,49 +19,45 @@ const isActive = (path: string) => route.path === path
 </script>
 
 <template>
-  <div class="fixed inset-y-0 z-20 h-svh w-64 hidden md:flex left-0 border-r border-gray-100 bg-white flex-col">
-    <div class="flex flex-col gap-2 p-4 border-b border-gray-50">
+  <!-- Desktop Sidebar: Sticky instead of fixed to flow naturally -->
+  <div class="hidden md:flex sticky top-0 h-screen w-60 shrink-0 border-r border-gray-100 bg-white flex-col z-30">
+    <div class="flex flex-col gap-2 p-3 border-b border-gray-50">
       <div class="flex items-center gap-2">
-        <span class="text-xl">🍦</span>
+        <span class="text-lg">🍦</span>
         <div>
-          <span class="font-bold text-sm block text-gray-900">Marcianos</span>
-          <p class="text-[10px] font-medium text-gray-500">Panel Cliente</p>
+          <span class="font-bold text-xs block text-gray-900">Marcianos</span>
+          <p class="text-[9px] font-medium text-gray-500">Panel Cliente</p>
         </div>
       </div>
     </div>
 
-    <div class="flex-1 overflow-y-auto p-2">
-      <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-2 mb-2 mt-2">Navegación</div>
-      <nav class="flex flex-col gap-1">
-        <router-link to="/" class="nav-item" :class="{ active: isActive('/') }">
-          <Icons.LayoutDashboard class="w-4 h-4" />
+    <div class="flex-1 overflow-y-auto p-2 scrollbar-hide">
+      <div class="text-[9px] font-bold text-gray-400 uppercase tracking-widest px-2 mb-2 mt-2">Navegación</div>
+      <nav class="flex flex-col gap-0.5">
+        <router-link to="/" class="nav-item text-xs py-1.5" :class="{ active: isActive('/') }">
+          <Icons.LayoutDashboard class="w-3.5 h-3.5" />
           <span>Dashboard</span>
         </router-link>
 
-        <router-link to="/pedidos" class="nav-item" :class="{ active: isActive('/pedidos') }">
-          <Icons.ShoppingBag class="w-4 h-4" />
+        <router-link to="/pedidos" class="nav-item text-xs py-1.5" :class="{ active: isActive('/pedidos') }">
+          <Icons.ShoppingBag class="w-3.5 h-3.5" />
           <span class="flex-1">Mis Pedidos</span>
         </router-link>
-
-        <!-- <router-link to="/perfil" class="nav-item" :class="{ active: isActive('/perfil') }">
-          <Icons.User class="w-4 h-4" />
-          <span>Mi Perfil</span>
-        </router-link> -->
       </nav>
     </div>
 
-    <div class="p-4 border-t border-gray-50">
-      <div class="flex items-center gap-3 mb-4 px-2">
-        <div class="w-8 h-8 rounded-full bg-pink-100 flex items-center justify-center text-xs font-bold text-pink-600">
+    <div class="p-3 border-t border-gray-50">
+      <div class="flex items-center gap-2 mb-3 px-1">
+        <div class="w-7 h-7 rounded-full bg-pink-100 flex items-center justify-center text-[10px] font-bold text-pink-600 shrink-0">
           {{ user.nombre?.substring(0, 2).toUpperCase() }}
         </div>
-        <div class="overflow-hidden">
-          <p class="text-xs font-bold text-gray-900 truncate">{{ user.nombre }}</p>
-          <p class="text-[10px] text-gray-500 truncate">{{ user.lvl == 2 ? 'Cliente' : 'Admin' }}</p>
+        <div class="overflow-hidden min-w-0">
+          <p class="text-[11px] font-bold text-gray-900 truncate">{{ user.nombre }}</p>
+          <p class="text-[9px] text-gray-500 truncate">{{ user.lvl == 2 ? 'Cliente' : 'Admin' }}</p>
         </div>
       </div>
-      <button @click="logout" class="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium text-gray-500 hover:text-red-600 hover:bg-red-50 transition-colors">
-        <Icons.LogOut class="w-3.5 h-3.5" />
+      <button @click="logout" class="w-full flex items-center gap-2 px-2 py-1.5 rounded-md text-[11px] font-medium text-gray-500 hover:text-red-600 hover:bg-red-50 transition-colors">
+        <Icons.LogOut class="w-3 h-3" />
         Cerrar Sesión
       </button>
     </div>

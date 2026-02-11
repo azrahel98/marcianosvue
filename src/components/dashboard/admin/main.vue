@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import PedidoCard from '@comp/dashboard/admin/PedidoCard.vue'
 import StockMovementModal from '@comp/dashboard/admin/StockMovementModal.vue'
 import { useClientStore } from '@store/cliente'
@@ -20,10 +20,6 @@ const handleMovementSaved = async () => {
   // Optionally refresh other data if needed
   // Stock is already refreshed by the store action
 }
-
-onMounted(async () => {
-  await Promise.all([store.pedidos_admin(), saboresStore.fetchSabores()])
-})
 </script>
 
 <template>

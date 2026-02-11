@@ -6,6 +6,30 @@ import { userStore } from './user'
 export const useClientStore = defineStore('clientStore', () => {
   const pedido = ref<any>({})
   const pedidos = ref<any[]>([])
+  const socket = ref<WebSocket | null>(null)
+
+  const initSocket = async () => {
+    if (socket.value?.readyState === WebSocket.OPEN) return
+
+    // Registrar Service Worker para soporte en Android
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch((err) => console.error('Error registrando Service Worker:', err))
+    }
+
+    const ws = new WebSocket('wss://api.odeploy.work/ws')
+
+    ws.onmessage = async (event) => {
+      const payload = JSON.parse(event.data)
+      if (payload.event === 'order_created') {
+        // Usamos una función mejorada para notificar
+        enviarNotificacion('Nuevo Pedido', `Orden #${payload.data?.id || ''}`)
+        await pedidos_admin()
+      }
+    }
+
+    // ... (resto de la lógica onclose/onerror)
+    socket.value = ws
+  }
 
   const fetchClientData = async () => {
     const user = userStore()
@@ -72,6 +96,32 @@ export const useClientStore = defineStore('clientStore', () => {
       throw error
     }
   }
+  const enviarNotificacion = async (titulo: string, cuerpo: string) => {
+    if (Notification.permission !== 'granted') return
 
-  return { pedido, pedidos, fetchClientData, update_pedidos, canjear, pedidos_admin, updateStatus }
+    // En Android/Mobile es mejor disparar vía Service Worker
+    const registration = await navigator.serviceWorker.getRegistration()
+    if (registration) {
+      registration.showNotification(titulo, {
+        body: cuerpo,
+        icon: '/logo-icon.png',
+        badge: '/logo-icon.png' // Icono pequeño en la barra de estado
+      })
+    } else {
+      // Fallback para escritorio
+      new Notification(titulo, { body: cuerpo, icon: '/logo-icon.png' })
+    }
+  }
+
+  const solicitarPermisoHost = async () => {
+    if (!('Notification' in window)) {
+      console.error('Este navegador no soporta notificaciones')
+      return
+    }
+    const permission = await Notification.requestPermission()
+    if (permission === 'granted') {
+      console.log('Permiso concedido')
+    }
+  }
+  return { pedido, pedidos, fetchClientData, update_pedidos, canjear, pedidos_admin, updateStatus, initSocket, solicitarPermisoHost }
 })

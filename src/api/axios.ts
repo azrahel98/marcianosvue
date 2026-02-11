@@ -1,13 +1,18 @@
 import axios from 'axios'
 
-const SERVER = 'https://api.odeploy.work'
-
 const api = axios.create({
-  baseURL: SERVER,
+  baseURL: 'https://api.odeploy.work',
   headers: {
-    'Content-Type': 'application/json',
-    Authorization: 'Bearer ' + localStorage.getItem('jwt')
+    'Content-Type': 'application/json'
   }
+})
+
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('jwt')
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
+  return config
 })
 
 export { api }

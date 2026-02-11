@@ -1,24 +1,29 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { userStore } from '@store/user'
-// import { useSaboresStore } from '@store/sabores'
 import { useClientStore } from '@store/cliente'
 import Modal from '@comp/common/Modal.vue'
 
 import MisPedidos from '@comp/dashboard/pedidos/MisPedidos.vue'
 import GestionSabores from '@comp/dashboard/pedidos/GestionSabores.vue'
 import FormularioPedido from '@comp/dashboard/pedidos/FormularioPedido.vue'
+import { useSaboresStore } from '@store/sabores'
 
 const user = userStore()
-// const saboresStore = useSaboresStore()
 const clientStore = useClientStore()
+const saboresStore = useSaboresStore()
 
 const isModalOpen = ref(false)
 
 const isLoading = ref(false)
 
 onMounted(async () => {
-  await clientStore.fetchClientData()
+  await saboresStore.fetchSabores()
+  if (!user.isAdmin) {
+    await clientStore.fetchClientData()
+  } else {
+    await clientStore.pedidos_admin()
+  }
 })
 </script>
 

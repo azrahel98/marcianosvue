@@ -75,7 +75,6 @@ const router = useRouter()
 const isLoading = ref(false)
 const apiError = ref('')
 
-// Esquema de validación
 const loginSchema = z.object({
   email: z.string().email('Correo inválido'),
   contrasena: z.string().min(3, 'Mínimo 6 caracteres')
