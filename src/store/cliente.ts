@@ -12,9 +12,9 @@ export const useClientStore = defineStore('clientStore', () => {
     if (socket.value?.readyState === WebSocket.OPEN) return
 
     // Registrar Service Worker para soporte en Android
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js').catch((err) => console.error('Error registrando Service Worker:', err))
-    }
+    //if ('serviceWorker' in navigator) {
+      //navigator.serviceWorker.register('/sw.js').catch((err) => console.error('Error registrando Service Worker:', err))
+    //}
 
     const ws = new WebSocket('wss://api.odeploy.work/ws')
 
