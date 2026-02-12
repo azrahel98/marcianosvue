@@ -7,7 +7,7 @@ import { useClientStore } from '@store/cliente'
 onMounted(async () => {
   const clientStore = useClientStore()
   await clientStore.initSocket()
-  await clientStore.solicitarPermisoHost()
+  //await clientStore.solicitarPermisoHost()
 })
 </script>
 
