@@ -13,7 +13,7 @@ export const useClientStore = defineStore('clientStore', () => {
 
     // Registrar Service Worker para soporte en Android
     //if ('serviceWorker' in navigator) {
-      //navigator.serviceWorker.register('/sw.js').catch((err) => console.error('Error registrando Service Worker:', err))
+    //navigator.serviceWorker.register('/sw.js').catch((err) => console.error('Error registrando Service Worker:', err))
     //}
 
     const ws = new WebSocket('wss://api.odeploy.work/ws')
@@ -113,15 +113,5 @@ export const useClientStore = defineStore('clientStore', () => {
     }
   }
 
-  const solicitarPermisoHost = async () => {
-    if (!('Notification' in window)) {
-      console.error('Este navegador no soporta notificaciones')
-      return
-    }
-    const permission = await Notification.requestPermission()
-    if (permission === 'granted') {
-      console.log('Permiso concedido')
-    }
-  }
-  return { pedido, pedidos, fetchClientData, update_pedidos, canjear, pedidos_admin, updateStatus, initSocket, solicitarPermisoHost }
+  return { pedido, pedidos, fetchClientData, update_pedidos, canjear, pedidos_admin, updateStatus, initSocket }
 })

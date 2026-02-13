@@ -10,7 +10,6 @@ import { useSaboresStore } from '@store/sabores'
 const clientStore = useClientStore()
 const user = userStore()
 const saboresStore = useSaboresStore()
-const permission = ref(Notification.permission)
 
 onMounted(async () => {
   if (!user.isAdmin) {
@@ -19,11 +18,6 @@ onMounted(async () => {
     await Promise.all([clientStore.pedidos_admin(), saboresStore.fetchSabores()])
   }
 })
-
-const activarNotificaciones = async () => {
-  await clientStore.solicitarPermisoHost()
-  permission.value = Notification.permission
-}
 </script>
 
 <template>
@@ -32,29 +26,6 @@ const activarNotificaciones = async () => {
     <div class="mb-4">
       <h1 class="text-2xl font-black bg-linear-to-r from-pink-600 to-cyan-600 bg-clip-text text-transparent">¡Hola, {{ user.nombre }}!</h1>
       <p class="text-gray-600 mt-0.5 text-xs font-medium">✨ Tu día es más dulce hoy.</p>
-
-      <button
-        v-if="permission === 'default'"
-        @click="activarNotificaciones"
-        class="mt-3 flex items-center gap-1.5 px-3 py-1.5 bg-pink-50 text-pink-600 rounded-md text-xs font-bold active:scale-95 transition-transform"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="14"
-          height="14"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="lucide lucide-bell"
-        >
-          <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
-          <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
-        </svg>
-        Activar Notificaciones
-      </button>
     </div>
 
     <Progreso />

@@ -17,8 +17,7 @@ const openMovementModal = (sabor: any) => {
 }
 
 const handleMovementSaved = async () => {
-  // Optionally refresh other data if needed
-  // Stock is already refreshed by the store action
+  await saboresStore.fetchSabores()
 }
 </script>
 
