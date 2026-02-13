@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Progreso from '@comp/dashboard/Progreso.vue'
 import UltimasCompras from '@comp/dashboard/UltimasCompras.vue'
-import { onMounted, ref } from 'vue'
+import { onMounted} from 'vue'
 import { useClientStore } from '@store/cliente'
 import { userStore } from '@store/user'
 import Main from '@comp/dashboard/admin/main.vue'
