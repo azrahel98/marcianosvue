@@ -27,13 +27,17 @@
                   'status-completado': pedido.estado === 'completado',
                   'status-cancelado': pedido.estado === 'cancelado',
                   'status-porcobrar': pedido.estado === 'porcobrar',
-                  'status-canje': pedido.estado === 'canje'
+                  'status-canje': pedido.estado === 'canje',
+                  'status-acuenta': pedido.estado === 'acuenta'
                 }"
               >
                 {{ pedido.estado }}
               </span>
             </div>
             <p class="text-[10px] text-gray-400 font-medium">{{ format(new Date(pedido.fecha), 'dd/MM/yyyy') }}</p>
+            <div>
+              <p v-for="x in pedido.detalle" :key="x.sabor" class="text-xs text-gray-500">{{ x.sabor }} x {{ x.cantidad }}</p>
+            </div>
           </div>
         </div>
 

@@ -17,7 +17,6 @@ const cantidad = ref(1)
 const tipo = ref('ingreso')
 const loading = ref(false)
 
-// Reset form when modal opens
 watch(
   () => props.isOpen,
   (newVal) => {

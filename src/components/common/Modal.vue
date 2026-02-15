@@ -35,10 +35,8 @@ onUnmounted(() => {
       leave-to-class="opacity-0"
     >
       <div v-if="isOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6" role="dialog" aria-modal="true">
-        <!-- Backdrop -->
         <div class="fixed inset-0 bg-gray-900/30 backdrop-blur-sm" @click="emit('close')" aria-hidden="true"></div>
 
-        <!-- Panel -->
         <Transition
           enter-active-class="transition ease-out duration-300"
           enter-from-class="opacity-0 scale-95 translate-y-4"
@@ -48,7 +46,6 @@ onUnmounted(() => {
           leave-to-class="opacity-0 scale-95 translate-y-4"
         >
           <div class="relative bg-white w-full max-w-lg rounded-2xl shadow-xl overflow-hidden flex flex-col max-h-[90vh]">
-            <!-- Header -->
             <div v-if="$slots.header" class="px-5 py-4 border-b border-gray-100 flex items-center justify-between bg-white shrink-0">
               <slot name="header"></slot>
               <button @click="emit('close')" class="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-gray-100">
@@ -69,12 +66,10 @@ onUnmounted(() => {
               </button>
             </div>
 
-            <!-- Body -->
             <div class="p-5 overflow-y-auto custom-scrollbar">
               <slot name="body"></slot>
             </div>
 
-            <!-- Footer -->
             <div v-if="$slots.footer" class="px-5 py-4 bg-gray-50 border-t border-gray-100 flex justify-end gap-2 shrink-0">
               <slot name="footer"></slot>
             </div>

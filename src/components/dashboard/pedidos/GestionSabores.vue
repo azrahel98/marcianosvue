@@ -50,7 +50,6 @@ const handleCreateSabor = async () => {
 
 <template>
   <div>
-    <!-- Create Flavor Form (Admin Only) -->
     <div v-if="user.isAdmin" class="mb-6 bg-white p-3 rounded-lg border border-gray-100 shadow-sm">
       <h2 class="text-xs font-bold text-gray-800 mb-3 flex items-center gap-2 uppercase tracking-wide">
         <span class="w-1.5 h-1.5 rounded-full bg-pink-500"></span>
@@ -99,7 +98,6 @@ const handleCreateSabor = async () => {
       </form>
     </div>
 
-    <!-- Sabores Grid -->
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
       <div
         v-for="sabor in saboresStore.sabores"

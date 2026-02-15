@@ -1,15 +1,12 @@
 <script setup lang="ts">
 import { useRouter, useRoute } from 'vue-router'
-// import { useUIStore } from '@store/ui'
 import * as Icons from '@comp/icons'
 import { userStore } from '@store/user'
 
 const router = useRouter()
 const route = useRoute()
-// const uiStore = useUIStore()
 const user = userStore()
 
-// Solo funciones de utilidad
 const logout = () => {
   localStorage.clear()
   router.push('/login')
@@ -19,7 +16,6 @@ const isActive = (path: string) => route.path === path
 </script>
 
 <template>
-  <!-- Desktop Sidebar: Sticky instead of fixed to flow naturally -->
   <div class="hidden md:flex sticky top-0 h-screen w-60 shrink-0 border-r border-gray-100 bg-white flex-col z-30">
     <div class="flex flex-col gap-2 p-3 border-b border-gray-50">
       <div class="flex items-center gap-2">

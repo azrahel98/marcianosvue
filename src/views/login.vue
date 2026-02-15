@@ -91,12 +91,10 @@ const errors = reactive({
 })
 
 const handleLogin = async () => {
-  // Reset errors
   errors.email = ''
   errors.contrasena = ''
   apiError.value = ''
 
-  // Validar
   const result = loginSchema.safeParse(form)
 
   if (!result.success) {
@@ -107,7 +105,6 @@ const handleLogin = async () => {
     return
   }
 
-  // API Call
   try {
     isLoading.value = true
     const { data } = await api.post('/login', form)
@@ -120,7 +117,6 @@ const handleLogin = async () => {
       apiError.value = 'No se recibió el token de acceso'
     }
   } catch (error: any) {
-    // eslint-disable-line
     console.error(error)
     if (error.response?.data?.message) {
       apiError.value = error.response.data.message

@@ -33,9 +33,9 @@ const clientStore = useClientStore()
 
         <div class="h-px bg-gray-50 my-2"></div>
 
-        <div class="flex justify-between items-center">
-          <span class="text-[10px] text-gray-500 font-medium uppercase tracking-wide">Items</span>
-          <span class="text-xs font-medium text-gray-800"> {{ pedido.detalle.length }} </span>
+        <div v-for="x in pedido.detalle" :key="x.sabor" class="flex justify-between items-center">
+          <span class="text-[10px] text-gray-500 font-medium uppercase tracking-wide">{{ x.sabor }}</span>
+          <span class="text-xs font-medium text-gray-800"> {{ x.cantidad }} </span>
         </div>
 
         <div class="flex justify-between items-center mt-1">

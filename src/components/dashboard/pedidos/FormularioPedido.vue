@@ -1,6 +1,5 @@
 <template>
   <form @submit.prevent="submitOrder" class="space-y-4">
-    <!-- Product Selection Area -->
     <div class="bg-gray-50/80 p-3 rounded-xl border border-gray-100 shadow-sm">
       <label class="flex items-center gap-1 text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">
         <svg
@@ -81,7 +80,6 @@
       </div>
     </div>
 
-    <!-- Selected Items List -->
     <div class="space-y-2 relative min-h-[120px]">
       <div v-if="pedido.items.length === 0" class="flex flex-col items-center justify-center py-8 text-gray-300 border-2 border-dashed border-gray-100 rounded-xl h-full">
         <svg
@@ -109,7 +107,6 @@
           :key="item.saborid"
           class="group flex gap-3 items-center bg-white p-2 pr-3 rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:border-cyan-100 transition-all"
         >
-          <!-- Icon/Image Placeholder -->
           <div class="h-10 w-10 rounded-lg bg-linear-to-br from-pink-50 to-pink-100 flex items-center justify-center text-pink-400 shrink-0">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -163,7 +160,6 @@
       </TransitionGroup>
     </div>
 
-    <!-- Footer Area -->
     <div class="pt-4 mt-2 border-t border-gray-50">
       <div class="flex justify-between items-end mb-4 px-1">
         <span class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Total a Pagar</span>
@@ -204,9 +200,7 @@ const emit = defineEmits(['refresh', 'close'])
 
 const user = userStore()
 
-// Access the store directly
 const saboresStore = useSaboresStore()
-// We'll use the store's state, but ensure we fetch fresh data on mount
 onMounted(() => {
   saboresStore.fetchSabores()
 })
@@ -242,19 +236,15 @@ const updateMarcianoInfo = () => {
 }
 
 const addItem = () => {
-  // Check if trying to add an item with valid ID
   if (marciano.value.saborid !== 0) {
-    // Optional: Double check stock just in case (though UI disables it)
     const selected = saboresStore.sabores?.find((s: any) => s.id_sabor === marciano.value.saborid)
     if (selected && selected.stock <= 0) {
       alert('Producto agotado')
       return
     }
 
-    // Usamos spread para romper la reactividad y que no se sigan vinculando
     pedido.value.items.push({ ...marciano.value })
 
-    // Reset manual
     marciano.value = {
       saborid: 0,
       nombre: '',
@@ -277,7 +267,6 @@ const submitOrder = async () => {
     loading.value = true
     isSubmittingOrder.value = true
 
-    // Prepare payload for /cliente/comprar
     const payload = {
       userId: user.id,
       productos: pedido.value.items.map((item) => ({
@@ -289,7 +278,6 @@ const submitOrder = async () => {
     await api.post('/cliente/comprar', payload)
 
     emit('refresh')
-    // Close modal or reset form
     emit('close')
   } catch (error) {
     alert((error as Error).message || 'Error al procesar el pedido')
@@ -301,7 +289,6 @@ const submitOrder = async () => {
 }
 </script>
 <style scoped>
-/* Transición de entrada y salida */
 .list-enter-active,
 .list-leave-active {
   transition: all 0.4s ease;
@@ -317,7 +304,6 @@ const submitOrder = async () => {
   transform: scale(0.5);
 }
 
-/* Para que los elementos que se quedan no salten, sino que se deslicen */
 .list-move {
   transition: transform 0.4s ease;
 }

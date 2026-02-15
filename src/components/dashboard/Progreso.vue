@@ -6,7 +6,6 @@ import ModalCanje from '@comp/dashboard/canje/ModalCanje.vue'
 const store = useClientStore()
 const showRedeemModal = ref(false)
 
-// Cálculos derivados para limpiar el template
 const pedido = computed(() => store.pedido)
 const faltan = computed(() => pedido.value?.faltan_para_el_proximo ?? 0)
 const completados = computed(() => Math.max(0, 10 - faltan.value))

@@ -68,7 +68,6 @@ onMounted(async () => {
             {{ hasPendingOrder ? 'Pedido Pendiente' : 'Registrar Pedido' }}
           </button>
 
-          <!-- Tooltip for disabled state -->
           <div
             v-if="hasPendingOrder"
             class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-1 text-xs font-bold text-white bg-gray-800 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none"

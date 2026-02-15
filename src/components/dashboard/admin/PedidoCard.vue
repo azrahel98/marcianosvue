@@ -22,8 +22,8 @@ const statusColor = computed(() => {
       return 'status-cancelado'
     case 'porcobrar':
       return 'status-porcobrar'
-    case 'a cuenta':
-      return 'status-porcobrar'
+    case 'acuenta':
+      return 'status-acuenta'
     default:
       return 'bg-gray-100 text-gray-700'
   }
@@ -48,7 +48,6 @@ const handleStatusChange = async (newStatus: string) => {
     await store.updateStatus(props.orden.id_pedido, newStatus)
     isModalOpen.value = false
   } catch (error) {
-    // Handle error (maybe show a toast)
     console.error(error)
   }
 }
@@ -56,7 +55,6 @@ const handleStatusChange = async (newStatus: string) => {
 
 <template>
   <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-3 hover:shadow-md transition-shadow duration-200">
-    <!-- Header -->
     <div class="flex justify-between items-start mb-2">
       <div class="flex-1 min-w-0">
         <div class="flex items-center gap-1.5 flex-wrap">
@@ -68,16 +66,15 @@ const handleStatusChange = async (newStatus: string) => {
         </div>
         <p class="text-[9px] text-gray-400 mt-0.5">{{ formatDate(orden.fecha) }}</p>
         <p class="text-[11px] mt-0.5 font-semibold text-gray-800 truncate">{{ orden.usuario }}</p>
+        <p class="text-[11px] mt-0.5 font-mono text-gray-800 truncate">{{ orden.requisitos }}</p>
       </div>
       <div class="text-right ml-2 shrink-0">
         <p class="text-xs font-bold text-gray-900">S/ {{ Number(orden.total_pedido).toFixed(2) }}</p>
       </div>
     </div>
 
-    <!-- Divider -->
     <div class="h-px bg-gray-50 my-1.5"></div>
 
-    <!-- Detalles -->
     <div class="space-y-1">
       <div v-for="(item, index) in orden.detalle" :key="index" class="flex justify-between items-center text-[10px]">
         <div class="flex items-center gap-1.5 overflow-hidden">
@@ -89,8 +86,7 @@ const handleStatusChange = async (newStatus: string) => {
         </span>
       </div>
     </div>
-    <!-- Footer Actions -->
-    <div class="mt-2 flex justify-end" v-if="orden.estado !== 'canje'">
+    <div class="mt-2 flex justify-end">
       <button @click="openModal" class="text-[10px] font-bold text-pink-600 hover:text-pink-700 hover:bg-pink-50 px-2 py-1 rounded transition-colors uppercase tracking-wide">
         Cambiar Estado
       </button>

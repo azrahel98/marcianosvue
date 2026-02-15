@@ -15,7 +15,6 @@ const emit = defineEmits<{
 const selectedStatus = ref(props.currentStatus)
 const loading = ref(false)
 
-// Sync prop with local state when modal opens
 watch(
   () => props.isOpen,
   (newVal) => {
@@ -31,7 +30,7 @@ const statuses = [
   { value: 'cancelado', label: 'Cancelado' },
   { value: 'porcobrar', label: 'Por Cobrar' },
   { value: 'canje', label: 'Canje' },
-  { value: 'a cuenta', label: 'a Cuenta' }
+  { value: 'acuenta', label: 'a Cuenta' }
 ]
 
 const handleSave = async () => {

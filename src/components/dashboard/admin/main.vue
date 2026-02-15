@@ -28,13 +28,33 @@ const filteredPedidos = computed(() => {
   return store.pedidos.filter((pedido) => pedido.estado === currentFilter.value)
 })
 
+const debtSummary = computed(() => {
+  const porCobrar = store.pedidos.filter((p: any) => p.estado === 'porcobrar')
+  const map = new Map<string, { usuario: string; total: number; count: number }>()
+  for (const p of porCobrar) {
+    const key = p.usuario || 'Sin nombre'
+    const entry = map.get(key)
+    const monto = Number(p.total_pedido) || 0
+    if (entry) {
+      entry.total += monto
+      entry.count++
+    } else {
+      map.set(key, { usuario: key, total: monto, count: 1 })
+    }
+  }
+  return Array.from(map.values()).sort((a, b) => b.total - a.total)
+})
+
+const totalDebt = computed(() => debtSummary.value.reduce((sum, u) => sum + u.total, 0))
+
 const filters = [
   { value: 'todos', label: 'Todos' },
   { value: 'pendiente', label: 'Pendientes', class: 'status-pendiente' },
   { value: 'completado', label: 'Completados', class: 'status-completado' },
   { value: 'porcobrar', label: 'Por Cobrar', class: 'status-porcobrar' },
   { value: 'canje', label: 'Canjes', class: 'status-canje' },
-  { value: 'cancelado', label: 'Cancelados', class: 'status-cancelado' }
+  { value: 'cancelado', label: 'Cancelados', class: 'status-cancelado' },
+  { value: 'acuenta', label: 'A Cuenta', class: 'status-acuenta' }
 ]
 </script>
 
@@ -66,7 +86,6 @@ const filters = [
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
-      <!-- Stock Panel (Side) -->
       <div class="lg:col-span-3 space-y-3">
         <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-3 sticky top-4">
           <h2 class="text-xs font-bold text-gray-900 mb-2 uppercase tracking-wide">Stock Actual</h2>
@@ -91,8 +110,25 @@ const filters = [
         </div>
       </div>
 
-      <!-- Pedidos List (Main) -->
-      <div class="lg:col-span-9">
+      <div class="lg:col-span-9 space-y-3">
+        <div v-if="currentFilter === 'porcobrar' && debtSummary.length" class="bg-white rounded-lg shadow-sm border border-gray-100 p-3">
+          <h2 class="text-xs font-bold text-gray-900 mb-2 uppercase tracking-wide">Resumen por Usuario</h2>
+          <div class="divide-y divide-gray-50">
+            <div v-for="item in debtSummary" :key="item.usuario" class="flex justify-between items-center py-1.5 text-[11px]">
+              <div class="flex items-center gap-2 min-w-0">
+                <span class="font-semibold text-gray-800 truncate">{{ item.usuario }}</span>
+                <span class="text-[9px] text-gray-400">{{ item.count }} pedido{{ item.count > 1 ? 's' : '' }}</span>
+              </div>
+              <span class="font-bold text-red-600 shrink-0 ml-2">S/ {{ item.total.toFixed(2) }}</span>
+            </div>
+          </div>
+          <div class="h-px bg-gray-200 my-1.5"></div>
+          <div class="flex justify-between items-center text-xs">
+            <span class="font-bold text-gray-900 uppercase tracking-wide">Total</span>
+            <span class="font-bold text-red-700">S/ {{ totalDebt.toFixed(2) }}</span>
+          </div>
+        </div>
+
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
           <PedidoCard v-for="pedido in filteredPedidos" :key="pedido.id_pedido" :orden="pedido" />
         </div>
