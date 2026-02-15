@@ -7,34 +7,40 @@ const clientStore = useClientStore()
 
 <template>
   <div v-if="clientStore.pedidos.length > 0" class="mb-8 mt-4">
-    <h2 class="text-lg font-black text-gray-800 mb-4">Mis Pedidos - {{ clientStore.pedidos.length }}</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      <div v-for="pedido in clientStore.pedidos" :key="pedido.id_pedido" class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+    <h2 class="text-base font-bold text-gray-800 mb-3 tracking-tight">Mis Pedidos - {{ clientStore.pedidos.length }}</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+      <div v-for="pedido in clientStore.pedidos" :key="pedido.id_pedido" class="bg-white p-3 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
         <div class="flex justify-between items-start mb-2">
           <div>
-            <p class="text-xs font-bold text-gray-500 uppercase">Pedido #{{ pedido.id_pedido }}</p>
-            <p class="text-sm font-medium text-gray-800">{{ format(pedido.fecha, 'dd/MM/yyyy') }}</p>
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <span class="text-[10px] font-bold text-gray-500 uppercase">#{{ pedido.id_pedido }}</span>
+              <span
+                class="px-1.5 py-0.5 text-[9px] font-bold rounded uppercase tracking-wider"
+                :class="{
+                  'status-pendiente': pedido.estado === 'pendiente',
+                  'status-completado': pedido.estado === 'completado',
+                  'status-cancelado': pedido.estado === 'cancelado',
+                  'status-porcobrar': pedido.estado === 'porcobrar',
+                  'status-canje': pedido.estado === 'canje'
+                }"
+              >
+                {{ pedido.estado }}
+              </span>
+            </div>
+            <p class="text-xs font-semibold text-gray-800 mt-1">{{ format(pedido.fecha, 'dd/MM/yyyy') }}</p>
           </div>
-          <span
-            class="px-2 py-1 text-[10px] font-bold rounded-full uppercase tracking-wider"
-            :class="{
-              'bg-yellow-100 text-yellow-600': pedido.estado === 'pendiente',
-              'bg-green-100 text-green-600': pedido.estado === 'completado',
-              'bg-red-100 text-red-600': pedido.estado === 'cancelado'
-            }"
-          >
-            {{ pedido.estado }}
-          </span>
         </div>
 
-        <div class="border-t border-gray-50 flex justify-between items-center">
-          <span class="text-xs text-gray-500 font-medium">Cantidad</span>
+        <div class="h-px bg-gray-50 my-2"></div>
+
+        <div class="flex justify-between items-center">
+          <span class="text-[10px] text-gray-500 font-medium uppercase tracking-wide">Items</span>
           <span class="text-xs font-medium text-gray-800"> {{ pedido.detalle.length }} </span>
         </div>
 
-        <div class="border-t border-gray-50 flex justify-between items-center">
-          <span class="text-xs text-gray-500 font-medium">Total</span>
-          <span class="text-base font-black text-gray-800">S/ {{ pedido.total_pedido }} </span>
+        <div class="flex justify-between items-center mt-1">
+          <span class="text-[10px] text-gray-500 font-medium uppercase tracking-wide">Total</span>
+          <span class="text-sm font-black text-gray-900">S/ {{ pedido.total_pedido }} </span>
         </div>
       </div>
     </div>

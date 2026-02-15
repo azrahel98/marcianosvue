@@ -32,12 +32,12 @@ onMounted(async () => {
 </script>
 
 <template>
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 pb-24">
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 pb-24">
     <div>
-      <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div class="mb-4 flex flex-col md:flex-row md:items-center justify-between gap-3">
         <div>
-          <h1 class="text-3xl font-black bg-linear-to-r from-pink-600 to-cyan-600 bg-clip-text text-transparent">Gestión de Sabores</h1>
-          <p v-if="user.isAdmin" class="text-gray-600 mt-1 text-sm font-medium">Administra stock y crea nuevos sabores.</p>
+          <h1 class="text-2xl font-black bg-linear-to-r from-pink-600 to-cyan-600 bg-clip-text text-transparent tracking-tight">Gestión de Sabores</h1>
+          <p v-if="user.isAdmin" class="text-gray-600 mt-0.5 text-xs font-medium">Administra stock y crea nuevos sabores.</p>
         </div>
         <div class="relative group">
           <button

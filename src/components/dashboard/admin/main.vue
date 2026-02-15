@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import PedidoCard from '@comp/dashboard/admin/PedidoCard.vue'
 import StockMovementModal from '@comp/dashboard/admin/StockMovementModal.vue'
 import { useClientStore } from '@store/cliente'
@@ -10,6 +10,7 @@ const saboresStore = useSaboresStore()
 
 const isMovementModalOpen = ref(false)
 const selectedSabor = ref<any>(null)
+const currentFilter = ref('todos')
 
 const openMovementModal = (sabor: any) => {
   selectedSabor.value = sabor
@@ -19,34 +20,70 @@ const openMovementModal = (sabor: any) => {
 const handleMovementSaved = async () => {
   await saboresStore.fetchSabores()
 }
+
+const filteredPedidos = computed(() => {
+  if (currentFilter.value === 'todos') {
+    return store.pedidos
+  }
+  return store.pedidos.filter((pedido) => pedido.estado === currentFilter.value)
+})
+
+const filters = [
+  { value: 'todos', label: 'Todos' },
+  { value: 'pendiente', label: 'Pendientes', class: 'status-pendiente' },
+  { value: 'completado', label: 'Completados', class: 'status-completado' },
+  { value: 'porcobrar', label: 'Por Cobrar', class: 'status-porcobrar' },
+  { value: 'canje', label: 'Canjes', class: 'status-canje' },
+  { value: 'cancelado', label: 'Cancelados', class: 'status-cancelado' }
+]
 </script>
 
 <template>
-  <main class="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
-    <div class="mb-6">
-      <h1 class="text-2xl font-bold text-gray-900">Pedidos Recientes</h1>
-      <p class="text-sm text-gray-500">Gestiona los pedidos de todos los usuarios</p>
+  <main class="max-w-7xl w-full mx-auto px-4 sm:px-6 py-4">
+    <div class="mb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div>
+        <h1 class="text-xl font-bold text-gray-900 tracking-tight">Pedidos Recientes</h1>
+        <p class="text-xs text-gray-500">Gestiona los pedidos de todos los usuarios</p>
+      </div>
+
+      <div class="flex flex-wrap gap-2">
+        <button
+          v-for="filter in filters"
+          :key="filter.value"
+          @click="currentFilter = filter.value"
+          class="px-3 py-1.5 rounded-full text-[10px] font-bold transition-all border"
+          :class="[
+            currentFilter === filter.value
+              ? filter.value === 'todos'
+                ? 'bg-gray-900 text-white border-gray-900'
+                : filter.class + ' border-transparent ring-2 ring-offset-1 ring-gray-100'
+              : 'bg-white text-gray-600 border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+          ]"
+        >
+          {{ filter.label }}
+        </button>
+      </div>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
       <!-- Stock Panel (Side) -->
-      <div class="lg:col-span-1 space-y-4">
-        <div class="bg-white rounded-xl shadow-xs border border-gray-100 p-4 sticky top-4">
-          <h2 class="text-sm font-bold text-gray-900 mb-3 uppercase tracking-wide">Stock Actual</h2>
+      <div class="lg:col-span-3 space-y-3">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-3 sticky top-4">
+          <h2 class="text-xs font-bold text-gray-900 mb-2 uppercase tracking-wide">Stock Actual</h2>
 
           <div v-if="saboresStore.isLoading" class="flex justify-center py-4">
-            <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-pink-500"></div>
+            <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-pink-500"></div>
           </div>
 
-          <div v-else class="space-y-2">
+          <div v-else class="space-y-1">
             <div
               v-for="sabor in saboresStore.sabores"
               :key="sabor.id_sabor"
               @click="openMovementModal(sabor)"
-              class="flex justify-between items-center text-sm p-2 rounded-lg hover:bg-gray-50 transition-colors border border-transparent hover:border-gray-100 cursor-pointer group"
+              class="flex justify-between items-center text-xs p-1.5 rounded-md hover:bg-gray-50 transition-colors border border-transparent hover:border-gray-100 cursor-pointer group"
             >
-              <span class="text-gray-700 font-medium group-hover:text-pink-600 transition-colors">{{ sabor.nombre }}</span>
-              <span class="px-2.5 py-0.5 rounded-full text-xs font-bold" :class="sabor.stock < 10 ? 'bg-red-100 text-red-600' : 'bg-emerald-100 text-emerald-600'">
+              <span class="text-gray-700 font-medium group-hover:text-pink-600 transition-colors truncate mr-2">{{ sabor.nombre }}</span>
+              <span class="px-1.5 py-0.5 rounded text-[10px] font-bold min-w-[24px] text-center" :class="sabor.stock < 10 ? 'bg-red-50 text-red-600' : 'bg-emerald-50 text-emerald-600'">
                 {{ sabor.stock }}
               </span>
             </div>
@@ -55,9 +92,9 @@ const handleMovementSaved = async () => {
       </div>
 
       <!-- Pedidos List (Main) -->
-      <div class="lg:col-span-3">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <PedidoCard v-for="pedido in store.pedidos" :key="pedido.id_pedido" :orden="pedido" />
+      <div class="lg:col-span-9">
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
+          <PedidoCard v-for="pedido in filteredPedidos" :key="pedido.id_pedido" :orden="pedido" />
         </div>
       </div>
     </div>
