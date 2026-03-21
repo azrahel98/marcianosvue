@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import { useSaboresStore } from '@store/sabores'
 import { useClientStore } from '@store/cliente'
 
@@ -12,10 +12,6 @@ const clientStore = useClientStore()
 const selectedFlavorId = ref<number | null>(null)
 const isLoading = ref(false)
 const errorMsg = ref('')
-
-onMounted(async () => {
-  await flavorsStore.fetchSabores()
-})
 
 const handleRedeem = async () => {
   if (!selectedFlavorId.value) return
@@ -36,20 +32,43 @@ const handleRedeem = async () => {
 </script>
 
 <template>
-  <div v-if="isOpen" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 transition-opacity" @click.self="$emit('close')">
-    <div class="bg-white rounded-2xl w-full max-w-md p-6 shadow-xl transform transition-all relative m-4">
-      <h3 class="text-lg font-black text-gray-800 mb-2">¡Canjea tu Recompensa! 🎁</h3>
-      <p class="text-sm text-gray-600 mb-4">Elige tu sabor favorito para llevarte tu marciano gratis.</p>
+  <Transition
+    enter-active-class="transition ease-out duration-300"
+    enter-from-class="opacity-0"
+    enter-to-class="opacity-100"
+    leave-active-class="transition ease-in duration-200"
+    leave-from-class="opacity-100"
+    leave-to-class="opacity-0"
+  >
+    <div v-if="isOpen" class="fixed inset-0 z-100 flex items-center justify-center" @click.self="$emit('close')">
+      <!-- Backdrop -->
+      <div class="fixed inset-0 bg-gray-900/40 backdrop-blur-md transition-all"></div>
+
+      <!-- Modal -->
+      <Transition
+        enter-active-class="transition ease-out duration-300 transform"
+        enter-from-class="opacity-0 scale-95 translate-y-4"
+        enter-to-class="opacity-100 scale-100 translate-y-0"
+        leave-active-class="transition ease-in duration-200 transform"
+        leave-from-class="opacity-100 scale-100 translate-y-0"
+        leave-to-class="opacity-0 scale-95 translate-y-4"
+      >
+        <div v-if="isOpen" class="bg-white/95 backdrop-blur-xl rounded-4xl w-full max-w-md p-6 sm:p-8 shadow-2xl shadow-black/10 transition-all relative z-10 mx-4 border border-white/60">
+          <h3 class="text-xl font-black text-gray-900 mb-2 flex items-center gap-2 text-center w-full justify-center">
+            <span class="text-2xl drop-shadow-sm filter-none">🎁</span>
+            <span class="bg-linear-to-r from-pink-600 to-amber-500 bg-clip-text text-transparent">¡Canjea tu Recompensa!</span>
+          </h3>
+          <p class="text-sm text-gray-500 mb-6 font-medium text-center">Elige tu sabor favorito para llevarte tu marciano gratis.</p>
 
       <div v-if="errorMsg" class="mb-4 p-3 bg-red-50 text-red-600 text-xs rounded-lg font-medium">
         {{ errorMsg }}
       </div>
 
-      <div class="mb-6">
-        <label class="block text-xs font-bold text-gray-600 mb-2">Sabor</label>
+      <div class="mb-8">
+        <label class="block text-xs font-black text-gray-700 uppercase tracking-widest mb-3">Sabor a elegir</label>
         <select
           v-model="selectedFlavorId"
-          class="w-full h-10 rounded-lg bg-gray-50 border border-gray-200 px-3 text-sm focus:border-cyan-500 focus:ring-1 focus:ring-cyan-200 outline-none transition-colors"
+          class="w-full h-12 rounded-2xl bg-gray-50/80 border border-gray-200 px-4 text-sm font-bold text-gray-800 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 outline-none transition-all cursor-pointer hover:bg-gray-100"
         >
           <option :value="null" disabled>Selecciona un sabor...</option>
           <option v-for="sabor in flavorsStore.sabores" :key="sabor.id_sabor" :value="sabor.id_sabor" :disabled="sabor.stock === 0">
@@ -58,16 +77,18 @@ const handleRedeem = async () => {
         </select>
       </div>
 
-      <div class="flex gap-3 justify-end">
-        <button @click="$emit('close')" class="px-4 py-2 text-xs font-bold text-gray-500 hover:bg-gray-100 rounded-lg transition-colors">Cancelar</button>
+      <div class="flex gap-3 justify-end pt-2 border-t border-gray-100/50 mt-4">
+        <button @click="$emit('close')" class="px-5 py-2.5 text-xs font-bold text-gray-600 hover:text-gray-900 bg-gray-50 hover:bg-gray-100 rounded-xl transition-all">Cancelar</button>
         <button
           @click="handleRedeem"
           :disabled="!selectedFlavorId || isLoading"
-          class="px-6 py-2 bg-linear-to-r from-pink-500 to-pink-600 text-white text-xs font-bold rounded-lg shadow-md hover:shadow-lg disabled:opacity-50 transition-all transform active:scale-95"
+          class="px-6 py-2.5 bg-linear-to-r from-pink-500 to-pink-600 text-white text-xs font-black rounded-xl shadow-lg shadow-pink-500/30 hover:shadow-pink-500/50 disabled:opacity-50 transition-all transform hover:-translate-y-0.5 active:scale-95 disabled:hover:translate-y-0"
         >
-          {{ isLoading ? 'Canjeando...' : 'Canjear Ahora' }}
+          {{ isLoading ? 'Obteniendo premio...' : '✨ ¡Quiero mi Gratis!' }}
         </button>
       </div>
+        </div>
+      </Transition>
     </div>
-  </div>
+  </Transition>
 </template>

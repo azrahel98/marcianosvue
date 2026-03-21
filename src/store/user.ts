@@ -17,7 +17,6 @@ export const userStore = defineStore('userStore', {
           this.logout()
           return
         }
-        console.log(decoded)
         this.id = decoded.id_usuario
         this.exp = decoded.exp!
         this.lvl = decoded.rol === 'admin' ? 1 : 2

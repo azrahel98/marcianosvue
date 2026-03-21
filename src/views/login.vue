@@ -70,6 +70,9 @@ import { ref, reactive } from 'vue'
 import { api } from '@api/axios'
 import { z } from 'zod'
 import { useRouter } from 'vue-router'
+import { userStore } from '@store/user'
+import { useClientStore } from '@store/cliente'
+import { useSaboresStore } from '@store/sabores'
 
 const router = useRouter()
 const isLoading = ref(false)
@@ -111,6 +114,18 @@ const handleLogin = async () => {
 
     if (data.token) {
       localStorage.setItem('jwt', data.token)
+
+      // 1. Guardar y decodificar el nuevo token ANTES de cualquier navegación
+      const user = userStore()
+      user.create(data.token)
+
+      // 2. Limpiar datos previos de sesiones anteriores
+      const client = useClientStore()
+      client.pedido = {}
+      client.pedidos = []
+
+      const sabores = useSaboresStore()
+      sabores.sabores = undefined
 
       await router.push({ name: 'dashboard' })
     } else {

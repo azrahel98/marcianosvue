@@ -1,7 +1,10 @@
 import axios from 'axios'
+import { jwtDecode } from 'jwt-decode'
+import { userStore } from '@store/user'
 
 const api = axios.create({
   baseURL: 'https://api.odeploy.work',
+  // baseURL: 'http://127.0.0.1:8080',
   headers: {
     'Content-Type': 'application/json'
   }
@@ -10,7 +13,20 @@ const api = axios.create({
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('jwt')
   if (token) {
-    config.headers.Authorization = `Bearer ${token}`
+    try {
+      const decoded: any = jwtDecode(token)
+      const currentTime = Math.floor(Date.now() / 1000)
+
+      if (decoded.exp && decoded.exp < currentTime) {
+        userStore().logout()
+        return Promise.reject(new Error('Token expirado'))
+      }
+
+      config.headers.Authorization = `Bearer ${token}`
+    } catch (error) {
+      userStore().logout()
+      return Promise.reject(new Error('Token inválido'))
+    }
   }
   return config
 })

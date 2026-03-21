@@ -28,9 +28,12 @@ export const useClientStore = defineStore('clientStore', () => {
     const user = userStore()
 
     try {
-      const [resPuntos] = await Promise.all([api.get(`/cliente/puntos/${user.id}`), update_pedidos()])
-
-      pedido.value = await resPuntos.data.data
+      if (user.isAdmin) {
+        await pedidos_admin()
+      } else {
+        const [resPuntos] = await Promise.all([api.get(`/cliente/puntos/${user.id}`), update_pedidos()])
+        pedido.value = await resPuntos.data.data
+      }
     } catch (error) {
       console.error('Error cargando datos del cliente:', error)
     }
@@ -66,9 +69,7 @@ export const useClientStore = defineStore('clientStore', () => {
   const pedidos_admin = async () => {
     try {
       const res = await api.get('/pedidos')
-
       pedidos.value = await res.data
-      console.log(res.data)
     } catch (error) {
       console.error('Error al canjear:', error)
       throw error
@@ -104,5 +105,5 @@ export const useClientStore = defineStore('clientStore', () => {
     }
   }
 
-  return { pedido, pedidos, fetchClientData, update_pedidos, canjear, pedidos_admin, updateStatus, initSocket }
+  return { pedido, pedidos, fetchClientData, update_pedidos, canjear, updateStatus, initSocket, pedidos_admin }
 })

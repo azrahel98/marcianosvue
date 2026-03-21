@@ -33,16 +33,24 @@ const routes: RouteRecordRaw[] = [
   }
 ]
 
-const middleware = async (_to: RouteLocationNormalized, _from: RouteLocationNormalized, next: NavigationGuardNext) => {
-  const store = userStore()
+const middleware = (_to: RouteLocationNormalized, _from: RouteLocationNormalized, next: NavigationGuardNext) => {
   const token = localStorage.getItem('jwt')
-  console.log(token)
-  if (token == null) {
-    return next({
-      name: 'login'
-    })
+  
+  if (!token) {
+    return next({ name: 'login' })
   }
-  store.create(token)
+
+  const store = userStore()
+  
+  if (!store.id) {
+    store.create(token)
+  } else {
+    const currentTime = Math.floor(Date.now() / 1000)
+    if (store.exp < currentTime) {
+      store.logout()
+      return next(false)
+    }
+  }
 
   return next()
 }
