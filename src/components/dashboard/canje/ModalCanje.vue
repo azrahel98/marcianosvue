@@ -68,7 +68,7 @@ const handleRedeem = async () => {
         <label class="block text-xs font-black text-gray-700 uppercase tracking-widest mb-3">Sabor a elegir</label>
         <select
           v-model="selectedFlavorId"
-          class="w-full h-12 rounded-2xl bg-gray-50/80 border border-gray-200 px-4 text-sm font-bold text-gray-800 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 outline-none transition-all cursor-pointer hover:bg-gray-100"
+          class="w-full h-12 rounded-2xl border border-gray-200 bg-gray-100/80 px-4 text-sm font-bold text-gray-800 focus:bg-white focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 outline-none transition-all cursor-pointer hover:bg-gray-200 shadow-inner"
         >
           <option :value="null" disabled>Selecciona un sabor...</option>
           <option v-for="sabor in flavorsStore.sabores" :key="sabor.id_sabor" :value="sabor.id_sabor" :disabled="sabor.stock === 0">

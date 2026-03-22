@@ -1,6 +1,6 @@
 <template>
   <form @submit.prevent="submitOrder" class="space-y-4">
-    <div class="bg-gray-50/80 p-3 rounded-xl border border-gray-100 shadow-sm">
+    <div class="bg-gray-100/80 p-3 rounded-xl border border-gray-200 shadow-inner">
       <label class="flex items-center gap-1 text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -105,7 +105,7 @@
         <div
           v-for="(item, index) in pedido.items"
           :key="item.saborid"
-          class="group flex gap-3 items-center bg-white p-2 pr-3 rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:border-cyan-100 transition-all"
+          class="group flex gap-3 items-center bg-white p-2 pr-3 rounded-xl border border-gray-200 shadow-sm hover:shadow-md hover:border-cyan-300 transition-all"
         >
           <div class="h-10 w-10 rounded-lg bg-linear-to-br from-pink-50 to-pink-100 flex items-center justify-center text-pink-400 shrink-0">
             <svg

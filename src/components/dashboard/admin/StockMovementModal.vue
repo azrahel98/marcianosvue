@@ -85,7 +85,7 @@ const handleSave = async () => {
           </div>
 
           <div class="p-6 space-y-5">
-            <div class="bg-gray-50/80 p-4 rounded-xl border border-gray-100">
+            <div class="bg-gray-100/80 p-4 rounded-xl border border-gray-200 shadow-inner">
               <p class="text-[10px] text-gray-500 uppercase tracking-widest font-black mb-1">Producto a ajustar</p>
               <div class="flex justify-between items-center mt-2">
                 <p class="text-sm font-bold text-gray-900 truncate mr-2">{{ sabor?.nombre }}</p>
@@ -117,7 +117,7 @@ const handleSave = async () => {
                 type="number"
                 min="1"
                 v-model="cantidad"
-                class="block w-full rounded-2xl border-gray-200 bg-gray-50/80 p-3.5 text-sm font-bold focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 transition-all outline-none"
+                class="block w-full rounded-2xl border border-gray-200 bg-gray-100/80 p-3.5 text-sm font-bold focus:bg-white focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 transition-all outline-none shadow-inner"
               />
             </div>
           </div>

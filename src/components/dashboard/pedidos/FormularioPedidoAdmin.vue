@@ -1,7 +1,7 @@
 <template>
   <form @submit.prevent="submitOrder" class="space-y-4">
     <!-- Selección de cliente -->
-    <div class="bg-blue-50/50 p-3 rounded-xl border border-blue-100 shadow-sm mb-4 relative z-20">
+    <div class="bg-blue-50/80 p-3 rounded-xl border border-blue-200 shadow-inner mb-4 relative z-20">
       <label class="flex items-center gap-1 text-[10px] font-bold text-blue-500 uppercase tracking-widest mb-2">
         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
@@ -27,7 +27,7 @@
     </div>
 
     <!-- Selección de productos -->
-    <div class="bg-gray-50/80 p-3 rounded-xl border border-gray-100 shadow-sm relative z-10">
+    <div class="bg-gray-100/80 p-3 rounded-xl border border-gray-200 shadow-inner relative z-10">
       <label class="flex items-center gap-1 text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">
         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14" /><path d="M12 5v14" /></svg>
         Agregar Producto
@@ -80,7 +80,7 @@
         <div
           v-for="(item, index) in pedido.items"
           :key="item.saborid"
-          class="group flex gap-3 items-center bg-white p-2 pr-3 rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:border-cyan-100 transition-all"
+          class="group flex gap-3 items-center bg-white p-2 pr-3 rounded-xl border border-gray-200 shadow-sm hover:shadow-md hover:border-cyan-300 transition-all"
         >
           <div class="h-10 w-10 rounded-lg bg-linear-to-br from-pink-50 to-pink-100 flex items-center justify-center text-pink-400 shrink-0">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" /></svg>

@@ -84,7 +84,7 @@ const handleSave = async () => {
               <select
                 id="status"
                 v-model="selectedStatus"
-                class="block w-full rounded-2xl border-gray-200 bg-gray-50/80 p-3 text-xs font-bold text-gray-800 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 cursor-pointer hover:bg-gray-100 transition-all outline-none"
+                class="block w-full rounded-2xl border border-gray-200 bg-gray-100/80 p-3 text-xs font-bold text-gray-800 focus:bg-white focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 cursor-pointer hover:bg-gray-200 transition-all outline-none shadow-inner"
               >
                 <option v-for="status in statuses" :key="status.value" :value="status.value" class="font-medium">
               {{ status.label }}

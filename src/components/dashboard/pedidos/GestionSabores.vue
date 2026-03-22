@@ -239,7 +239,7 @@ const totalStockGlobal = computed(() => reporteSabores.value.reduce((acc, s) => 
                   v-model="newSabor.nombre"
                   type="text"
                   placeholder="Ej. Fresa con Leche"
-                  class="h-11 w-full rounded-2xl bg-gray-50/80 border-gray-200 px-4 text-sm font-bold text-gray-800 placeholder:text-gray-400 focus:border-pink-400 focus:ring-4 focus:ring-pink-100 outline-none transition-all shadow-sm"
+                  class="h-11 w-full rounded-2xl border border-gray-200 bg-gray-100/80 px-4 text-sm font-bold text-gray-800 placeholder:text-gray-400 focus:bg-white focus:border-pink-400 focus:ring-4 focus:ring-pink-100 outline-none transition-all shadow-inner"
                   required
                 />
               </div>
@@ -251,7 +251,7 @@ const totalStockGlobal = computed(() => reporteSabores.value.reduce((acc, s) => 
                     type="number"
                     step="0.01"
                     min="0"
-                    class="h-11 w-full rounded-2xl bg-gray-50/80 border-gray-200 px-4 text-sm font-bold text-gray-800 placeholder:text-gray-400 focus:border-pink-400 focus:ring-4 focus:ring-pink-100 outline-none transition-all shadow-sm"
+                    class="h-11 w-full rounded-2xl border border-gray-200 bg-gray-100/80 px-4 text-sm font-bold text-gray-800 placeholder:text-gray-400 focus:bg-white focus:border-pink-400 focus:ring-4 focus:ring-pink-100 outline-none transition-all shadow-inner"
                     required
                   />
                 </div>
@@ -261,7 +261,7 @@ const totalStockGlobal = computed(() => reporteSabores.value.reduce((acc, s) => 
                     v-model.number="newSabor.stock_inicial"
                     type="number"
                     min="0"
-                    class="h-11 w-full rounded-2xl bg-gray-50/80 border-gray-200 px-4 text-sm font-bold text-gray-800 placeholder:text-gray-400 focus:border-pink-400 focus:ring-4 focus:ring-pink-100 outline-none transition-all shadow-sm"
+                    class="h-11 w-full rounded-2xl border border-gray-200 bg-gray-100/80 px-4 text-sm font-bold text-gray-800 placeholder:text-gray-400 focus:bg-white focus:border-pink-400 focus:ring-4 focus:ring-pink-100 outline-none transition-all shadow-inner"
                   />
                 </div>
               </div>

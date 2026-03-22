@@ -42,19 +42,16 @@ const currentFilter = ref('todos')
 
 const filteredPedidos = computed(() => {
   let orders = store.pedidos
-  
+
   if (currentFilter.value !== 'todos') {
     orders = orders.filter((p: any) => p.estado === currentFilter.value)
   }
-  
+
   if (searchQuery.value.trim() !== '') {
     const q = searchQuery.value.toLowerCase()
-    orders = orders.filter((p: any) => 
-      (p.usuario && p.usuario.toLowerCase().includes(q)) || 
-      p.id_pedido.toString().includes(q)
-    )
+    orders = orders.filter((p: any) => (p.usuario && p.usuario.toLowerCase().includes(q)) || p.id_pedido.toString().includes(q))
   }
-  
+
   return orders
 })
 
@@ -89,7 +86,7 @@ const clientsProgress = computed(() => {
     }
 
     const client = map.get(p.usuario)!
-    
+
     if (new Date(p.fecha) > new Date(client.ultPedido)) {
       client.ultPedido = p.fecha
     }
@@ -105,24 +102,26 @@ const clientsProgress = computed(() => {
     }
   }
 
-  return Array.from(map.values()).map(c => {
-    // Estimación de progreso local
-    const heladosDisponibles = Math.max(0, c.heladosComprados - (c.canjesUsados * 10))
-    const puntos = heladosDisponibles % 10
-    const canjesDisponibles = Math.floor(heladosDisponibles / 10)
-    const faltan = 10 - puntos
-    
-    return {
-      ...c,
-      puntos,
-      faltan,
-      canjesDisponibles
-    }
-  }).sort((a, b) => {
-    if (b.canjesDisponibles !== a.canjesDisponibles) return b.canjesDisponibles - a.canjesDisponibles
-    if (b.puntos !== a.puntos) return b.puntos - a.puntos
-    return b.totalGastado - a.totalGastado
-  })
+  return Array.from(map.values())
+    .map((c) => {
+      // Estimación de progreso local
+      const heladosDisponibles = Math.max(0, c.heladosComprados - c.canjesUsados * 10)
+      const puntos = heladosDisponibles % 10
+      const canjesDisponibles = Math.floor(heladosDisponibles / 10)
+      const faltan = 10 - puntos
+
+      return {
+        ...c,
+        puntos,
+        faltan,
+        canjesDisponibles
+      }
+    })
+    .sort((a, b) => {
+      if (b.canjesDisponibles !== a.canjesDisponibles) return b.canjesDisponibles - a.canjesDisponibles
+      if (b.puntos !== a.puntos) return b.puntos - a.puntos
+      return b.totalGastado - a.totalGastado
+    })
 })
 </script>
 
@@ -160,7 +159,7 @@ const clientsProgress = computed(() => {
             v-model="searchQuery"
             class="w-full bg-white border border-gray-200 text-gray-900 text-sm rounded-2xl outline-none focus:ring-4 focus:ring-pink-100 focus:border-pink-300 block pl-11 p-3.5 transition-all shadow-sm font-medium"
             placeholder="Buscar por cliente o ID..."
-          >
+          />
         </div>
       </div>
     </div>
@@ -244,8 +243,10 @@ const clientsProgress = computed(() => {
 
               <td class="px-6 py-4">
                 <div class="flex items-center gap-2 text-xs font-bold text-gray-500">
-                  <span class="text-sm opacity-60">📅</span> 
-                  <span>{{ format(new Date(pedido.fecha), 'dd/MM/yyyy') }}<br><span class="text-[10px] text-gray-400 font-medium">{{ format(new Date(pedido.fecha), 'HH:mm') }}</span></span>
+                  <span class="text-sm opacity-60">📅</span>
+                  <span
+                    >{{ format(new Date(pedido.fecha), 'dd/MM/yyyy') }}<br /><span class="text-[10px] text-gray-400 font-medium">{{ format(new Date(pedido.fecha), 'HH:mm') }}</span></span
+                  >
                 </div>
               </td>
 
@@ -302,7 +303,7 @@ const clientsProgress = computed(() => {
         </table>
       </div>
     </div>
-    
+
     <!-- Progreso de Clientes (Fidelidad) -->
     <div class="mt-12 mb-6">
       <div class="flex items-center gap-3 mb-6 animate-fade-in relative z-10">
@@ -350,10 +351,7 @@ const clientsProgress = computed(() => {
                       <span class="text-[10px] font-bold text-gray-400 text-right">{{ cliente.faltan }} para canje</span>
                     </div>
                     <div class="w-full bg-gray-100 h-2.5 rounded-full overflow-hidden shadow-inner border border-gray-200">
-                      <div
-                        class="bg-linear-to-r from-cyan-400 to-cyan-500 h-full rounded-full transition-all duration-500"
-                        :style="{ width: `${(cliente.puntos / 10) * 100}%` }"
-                      ></div>
+                      <div class="bg-linear-to-r from-cyan-400 to-cyan-500 h-full rounded-full transition-all duration-500" :style="{ width: `${(cliente.puntos / 10) * 100}%` }"></div>
                     </div>
                   </div>
                 </td>
@@ -380,16 +378,12 @@ const clientsProgress = computed(() => {
         </div>
       </div>
     </div>
+    <div>
+      <Imagen />
+    </div>
 
     <!-- Status Change Modal -->
-    <StatusModal
-      v-if="selectedOrderId"
-      :isOpen="isModalOpen"
-      :currentStatus="selectedOrderStatus"
-      :orderId="selectedOrderId"
-      @close="isModalOpen = false"
-      @save="handleStatusChange"
-    />
+    <StatusModal v-if="selectedOrderId" :isOpen="isModalOpen" :currentStatus="selectedOrderStatus" :orderId="selectedOrderId" @close="isModalOpen = false" @save="handleStatusChange" />
   </main>
 </template>
 
