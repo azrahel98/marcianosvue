@@ -86,48 +86,48 @@ const totalStockGlobal = computed(() => reporteSabores.value.reduce((acc, s) => 
 </script>
 
 <template>
-  <div v-if="user.isAdmin" class="space-y-8 animate-fade-in pb-10">
-    
+  <div v-if="user.isAdmin" class="space-y-5 animate-fade-in pb-6">
+
     <!-- Resumen General -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-      <div class="bg-white/95 backdrop-blur-xl rounded-3xl p-5 shadow-sm border border-pink-100 flex flex-col justify-between group overflow-hidden relative">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-2.5">
+      <div class="bg-white/95 backdrop-blur-xl rounded-xl p-3 shadow-sm border border-pink-100 flex flex-col justify-between group overflow-hidden relative">
         <div class="absolute inset-0 bg-linear-to-br from-pink-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-        <div class="flex items-center gap-2 mb-2 relative z-10">
-          <span class="bg-pink-100 text-pink-600 p-1.5 rounded-xl text-lg shadow-sm">💰</span>
-          <span class="text-[10px] font-black text-gray-500 uppercase tracking-widest">Ingresos Historicos</span>
+        <div class="flex items-center gap-1.5 mb-1.5 relative z-10">
+          <span class="bg-pink-100 text-pink-600 p-1 rounded-lg text-sm">💰</span>
+          <span class="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Ingresos</span>
         </div>
         <div class="relative z-10">
-          <span class="text-2xl font-black text-pink-600">S/ {{ totalVentasGlobal.toFixed(2) }}</span>
+          <span class="text-base font-bold text-pink-600">S/ {{ totalVentasGlobal.toFixed(2) }}</span>
         </div>
       </div>
-      <div class="bg-white/95 backdrop-blur-xl rounded-3xl p-5 shadow-sm border border-cyan-100 flex flex-col justify-between group overflow-hidden relative">
+      <div class="bg-white/95 backdrop-blur-xl rounded-xl p-3 shadow-sm border border-cyan-100 flex flex-col justify-between group overflow-hidden relative">
         <div class="absolute inset-0 bg-linear-to-br from-cyan-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-        <div class="flex items-center gap-2 mb-2 relative z-10">
-          <span class="bg-cyan-100 text-cyan-600 p-1.5 rounded-xl text-lg shadow-sm">🍦</span>
-          <span class="text-[10px] font-black text-gray-500 uppercase tracking-widest">Helados Vendidos</span>
+        <div class="flex items-center gap-1.5 mb-1.5 relative z-10">
+          <span class="bg-cyan-100 text-cyan-600 p-1 rounded-lg text-sm">🍦</span>
+          <span class="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Vendidos</span>
         </div>
         <div class="relative z-10">
-          <span class="text-2xl font-black text-cyan-600">{{ totalHeladosGlobal }}</span>
+          <span class="text-base font-bold text-cyan-600">{{ totalHeladosGlobal }}</span>
         </div>
       </div>
-      <div class="bg-white/95 backdrop-blur-xl rounded-3xl p-5 shadow-sm border border-emerald-100 flex flex-col justify-between group overflow-hidden relative">
+      <div class="bg-white/95 backdrop-blur-xl rounded-xl p-3 shadow-sm border border-emerald-100 flex flex-col justify-between group overflow-hidden relative">
         <div class="absolute inset-0 bg-linear-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-        <div class="flex items-center gap-2 mb-2 relative z-10">
-          <span class="bg-emerald-100 text-emerald-600 p-1.5 rounded-xl text-lg shadow-sm">📦</span>
-          <span class="text-[10px] font-black text-gray-500 uppercase tracking-widest">Stock Total</span>
+        <div class="flex items-center gap-1.5 mb-1.5 relative z-10">
+          <span class="bg-emerald-100 text-emerald-600 p-1 rounded-lg text-sm">📦</span>
+          <span class="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Stock Total</span>
         </div>
         <div class="relative z-10">
-          <span class="text-2xl font-black text-emerald-600">{{ totalStockGlobal }}</span>
+          <span class="text-base font-bold text-emerald-600">{{ totalStockGlobal }}</span>
         </div>
       </div>
-      <div class="bg-white/95 backdrop-blur-xl rounded-3xl p-5 shadow-sm border border-purple-100 flex flex-col justify-between group overflow-hidden relative">
+      <div class="bg-white/95 backdrop-blur-xl rounded-xl p-3 shadow-sm border border-purple-100 flex flex-col justify-between group overflow-hidden relative">
         <div class="absolute inset-0 bg-linear-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-        <div class="flex items-center gap-2 mb-2 relative z-10">
-          <span class="bg-purple-100 text-purple-600 p-1.5 rounded-xl text-lg shadow-sm">✨</span>
-          <span class="text-[10px] font-black text-gray-500 uppercase tracking-widest">Sabores Activos</span>
+        <div class="flex items-center gap-1.5 mb-1.5 relative z-10">
+          <span class="bg-purple-100 text-purple-600 p-1 rounded-lg text-sm">✨</span>
+          <span class="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Sabores</span>
         </div>
         <div class="relative z-10">
-          <span class="text-2xl font-black text-purple-600">{{ reporteSabores.length }}</span>
+          <span class="text-base font-bold text-purple-600">{{ reporteSabores.length }}</span>
         </div>
       </div>
     </div>

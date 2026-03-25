@@ -72,35 +72,35 @@ const isActive = (path: string) => route.path === path
 
   <!-- Floating Mobile Navigation -->
   <div
-    class="fixed bottom-4 left-4 right-4 z-50 h-[76px] bg-white/95 backdrop-blur-xl border border-gray-100/50 shadow-[0_8px_32px_rgba(0,0,0,0.12)] rounded-3xl md:hidden flex justify-around items-center px-1 pb-safe"
+    class="fixed bottom-3 left-3 right-3 z-50 h-[60px] bg-white/95 backdrop-blur-xl border border-gray-100/50 shadow-[0_4px_20px_rgba(0,0,0,0.1)] rounded-2xl md:hidden flex justify-around items-center px-1 pb-safe"
   >
-    <router-link to="/" class="flex flex-col items-center justify-center gap-1.5 w-16 h-full transition-all" :class="isActive('/') ? 'text-pink-600' : 'text-gray-400 hover:text-gray-600'">
-      <div class="w-12 h-12 flex items-center justify-center rounded-2xl transition-all duration-300" :class="isActive('/') ? 'bg-pink-100/80 shadow-inner scale-110' : ''">
-        <Icons.LayoutDashboard class="w-6 h-6" />
+    <router-link to="/" class="flex flex-col items-center justify-center gap-1 w-14 h-full transition-all" :class="isActive('/') ? 'text-pink-600' : 'text-gray-400 hover:text-gray-600'">
+      <div class="w-9 h-9 flex items-center justify-center rounded-xl transition-all duration-300" :class="isActive('/') ? 'bg-pink-100/80 scale-110' : ''">
+        <Icons.LayoutDashboard class="w-4.5 h-4.5" />
       </div>
-      <span class="text-[10px] font-black tracking-tight leading-none" :class="isActive('/') ? 'text-pink-600' : 'font-medium'">Inicio</span>
+      <span class="text-[9px] font-bold tracking-tight leading-none" :class="isActive('/') ? 'text-pink-600' : 'font-medium'">Inicio</span>
     </router-link>
 
     <router-link
       to="/pedidos"
-      class="flex flex-col items-center justify-center gap-1.5 w-16 h-full transition-all"
+      class="flex flex-col items-center justify-center gap-1 w-14 h-full transition-all"
       :class="isActive('/pedidos') ? 'text-cyan-600' : 'text-gray-400 hover:text-gray-600'"
     >
-      <div class="relative w-12 h-12 flex items-center justify-center rounded-2xl transition-all duration-300" :class="isActive('/pedidos') ? 'bg-cyan-100/80 shadow-inner scale-110' : ''">
-        <Icons.ShoppingBag class="w-6 h-6" />
+      <div class="relative w-9 h-9 flex items-center justify-center rounded-xl transition-all duration-300" :class="isActive('/pedidos') ? 'bg-cyan-100/80 scale-110' : ''">
+        <Icons.ShoppingBag class="w-4.5 h-4.5" />
         <span
-          class="absolute top-1 right-1 bg-pink-500 text-white text-[9px] w-4.5 h-4.5 flex items-center justify-center rounded-full font-bold shadow-md shadow-pink-200 border-2 border-white"
+          class="absolute top-0 right-0 bg-pink-500 text-white text-[8px] w-3.5 h-3.5 flex items-center justify-center rounded-full font-bold shadow-sm border border-white"
           >3</span
         >
       </div>
-      <span class="text-[10px] font-black tracking-tight leading-none" :class="isActive('/pedidos') ? 'text-cyan-600' : 'font-medium'">Pedidos</span>
+      <span class="text-[9px] font-bold tracking-tight leading-none" :class="isActive('/pedidos') ? 'text-cyan-600' : 'font-medium'">Pedidos</span>
     </router-link>
 
-    <button @click="logout" class="flex flex-col items-center justify-center gap-1.5 w-16 h-full text-gray-400 hover:text-red-500 transition-colors">
-      <div class="w-12 h-12 flex items-center justify-center rounded-2xl hover:bg-red-50 hover:scale-110 transition-all duration-300">
-        <Icons.LogOut class="w-6 h-6" />
+    <button @click="logout" class="flex flex-col items-center justify-center gap-1 w-14 h-full text-gray-400 hover:text-red-500 transition-colors">
+      <div class="w-9 h-9 flex items-center justify-center rounded-xl hover:bg-red-50 hover:scale-110 transition-all duration-300">
+        <Icons.LogOut class="w-4.5 h-4.5" />
       </div>
-      <span class="text-[10px] font-bold tracking-tight leading-none">Salir</span>
+      <span class="text-[9px] font-bold tracking-tight leading-none">Salir</span>
     </button>
   </div>
 </template>

@@ -7,7 +7,7 @@
 
     <div class="w-full max-w-[340px] relative z-10 px-4">
       <div class="text-center mb-6">
-        <h1 class="text-3xl font-black bg-gradient-to-r from-pink-500 to-cyan-500 bg-clip-text text-transparent mb-1">Marcianos</h1>
+        <h1 class="text-3xl font-black bg-linear-to-r from-pink-500 to-cyan-500 bg-clip-text text-transparent mb-1">Marcianos</h1>
       </div>
 
       <div data-slot="card" class="bg-white/80 backdrop-blur-sm flex flex-col gap-4 p-6 shadow-xl border border-pink-100 rounded-2xl">
@@ -43,7 +43,7 @@
 
           <button
             data-slot="button"
-            class="h-9 w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white font-bold rounded-lg text-sm shadow-md hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            class="h-9 w-full bg-linear-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white font-bold rounded-lg text-sm shadow-md hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             type="submit"
             :disabled="isLoading"
           >
@@ -125,7 +125,7 @@ const handleLogin = async () => {
       client.pedidos = []
 
       const sabores = useSaboresStore()
-      sabores.sabores = undefined
+      sabores.sabores = []
 
       await router.push({ name: 'dashboard' })
     } else {

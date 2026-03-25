@@ -164,8 +164,8 @@
       <div class="flex justify-between items-end mb-4 px-1">
         <span class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Total a Pagar</span>
         <div class="flex items-baseline gap-1">
-          <span class="text-sm font-medium text-gray-400">S/</span>
-          <span class="text-3xl font-black bg-linear-to-r from-cyan-600 to-cyan-500 bg-clip-text text-transparent">{{ totalPedido.toFixed(2) }}</span>
+          <span class="text-xs font-medium text-gray-400">S/</span>
+          <span class="text-xl font-bold bg-linear-to-r from-cyan-600 to-cyan-500 bg-clip-text text-transparent">{{ totalPedido.toFixed(2) }}</span>
         </div>
       </div>
 

@@ -1,52 +1,46 @@
 import { defineStore } from 'pinia'
 import { api } from '@api/axios'
-import { ref } from 'vue'
 
-export const useSaboresStore = defineStore('saboresStore', () => {
-  const sabores = ref<Array<any>>()
-  const isLoading = ref(false)
+export const useSaboresStore = defineStore('saboresStore', {
+  state: () => ({
+    sabores: [] as any[],
+    isLoading: false
+  }),
+  actions: {
+    async fetchSabores() {
+      this.isLoading = true
+      try {
+        const { data } = await api.get('/sabor')
+        this.sabores = await data
+      } catch (error) {
+        console.error('Error fetching sabores:', error)
+      } finally {
+        this.isLoading = false
+      }
+    },
 
-  const fetchSabores = async () => {
-    isLoading.value = true
-    try {
-      const { data } = await api.get('/sabor')
-      sabores.value = await data
-    } catch (error) {
-      console.error('Error fetching sabores:', error)
-    } finally {
-      isLoading.value = false
+    async createSabor(sabor: object) {
+      try {
+        await api.post('/sabor/nuevo', sabor)
+        await this.fetchSabores()
+      } catch (error) {
+        console.error('Error creating sabor:', error)
+        throw error
+      }
+    },
+
+    async registrarMovimiento(idSabor: number, cantidad: number, tipo: string) {
+      try {
+        await api.post('/pedidos/movimiento', {
+          idSabor,
+          cantidad,
+          tipo
+        })
+        await this.fetchSabores()
+      } catch (error) {
+        console.error('Error recording movement:', error)
+        throw error
+      }
     }
-  }
-
-  const createSabor = async (sabor: object) => {
-    try {
-      await api.post('/sabor/nuevo', sabor)
-      await fetchSabores()
-    } catch (error) {
-      console.error('Error creating sabor:', error)
-      throw error
-    }
-  }
-
-  const registrarMovimiento = async (idSabor: number, cantidad: number, tipo: string) => {
-    try {
-      await api.post('/pedidos/movimiento', {
-        idSabor,
-        cantidad,
-        tipo
-      })
-      await fetchSabores()
-    } catch (error) {
-      console.error('Error recording movement:', error)
-      throw error
-    }
-  }
-
-  return {
-    sabores,
-    isLoading,
-    fetchSabores,
-    createSabor,
-    registrarMovimiento
   }
 })

@@ -1,109 +1,135 @@
 import { api } from '@api/axios'
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
 import { userStore } from './user'
+import { useSocket } from '../composables/useSocket'
+import { useSaboresStore } from './sabores'
 
-export const useClientStore = defineStore('clientStore', () => {
-  const pedido = ref<any>({})
-  const pedidos = ref<any[]>([])
-  const socket = ref<WebSocket | null>(null)
+export const useClientStore = defineStore('clientStore', {
+  state: () => ({
+    pedido: {} as any,
+    pedidos: [] as any[]
+  }),
+  actions: {
+    initSocket() {
+      const user = userStore()
+      const { connect, on } = useSocket()
+      connect()
 
-  const initSocket = async () => {
-    if (socket.value?.readyState === WebSocket.OPEN) return
+      on('nuevo_pedido', async (payload) => {
+        console.log('Nuevo pedido recibido:', payload)
+        if (user.isAdmin) {
+          await this.pedidos_admin()
+        } else {
+          await this.update_pedidos()
+          const resPuntos = await api.get(`/cliente/puntos/${user.id}`)
+          this.pedido = resPuntos.data.data
+        }
+        this.enviarNotificacion('Nuevo Pedido', `Se ha creado un nuevo pedido`)
+      })
 
-    const ws = new WebSocket('wss://api.odeploy.work/ws')
+      on('cambio_estado', async (payload) => {
+        console.log('Cambio de estado:', payload)
+        if (user.isAdmin) {
+          await this.pedidos_admin()
+        } else {
+          await this.update_pedidos()
+        }
+      })
 
-    ws.onmessage = async (event) => {
-      const payload = JSON.parse(event.data)
-      if (payload.event === 'order_created') {
-        enviarNotificacion('Nuevo Pedido', `Orden #${payload.data?.id || ''}`)
-        await pedidos_admin()
+      on('stock_actualizado', async () => {
+        console.log('Stock actualizado')
+        const saboresStore = useSaboresStore()
+        await saboresStore.fetchSabores()
+      })
+
+      on('nuevo_cliente', async (payload) => {
+        console.log('Nuevo cliente registrado:', payload)
+      })
+
+      on('puntos_actualizados', async (payload) => {
+        console.log('Puntos actualizados:', payload)
+        if (!user.isAdmin) {
+          const resPuntos = await api.get(`/cliente/puntos/${user.id}`)
+          this.pedido = resPuntos.data.data
+        }
+      })
+    },
+
+    async fetchClientData() {
+      const user = userStore()
+      try {
+        if (user.isAdmin) {
+          await this.pedidos_admin()
+        } else {
+          const [resPuntos] = await Promise.all([api.get(`/cliente/puntos/${user.id}`), this.update_pedidos()])
+          this.pedido = await resPuntos.data.data
+        }
+      } catch (error) {
+        console.error('Error cargando datos del cliente:', error)
       }
-    }
+    },
 
-    socket.value = ws
-  }
+    async update_pedidos() {
+      const user = userStore()
+      try {
+        const res = await api.get(`/cliente/pedidos-agrupados/${user.id}`)
+        this.pedidos = await res.data
+      } catch (error) {
+        console.error('Error cargando datos del cliente:', error)
+      }
+    },
 
-  const fetchClientData = async () => {
-    const user = userStore()
+    async canjear(idSabor: number) {
+      const user = userStore()
+      try {
+        const res = await api.post('/cliente/canjear', {
+          userId: user.id,
+          idSabor: idSabor
+        })
+        await this.fetchClientData()
+        return await res.data
+      } catch (error) {
+        console.error('Error al canjear:', error)
+        throw error
+      }
+    },
 
-    try {
-      if (user.isAdmin) {
-        await pedidos_admin()
+    async pedidos_admin() {
+      try {
+        const res = await api.get('/pedidos')
+        this.pedidos = await res.data
+      } catch (error) {
+        console.error('Error al canjear:', error)
+        throw error
+      }
+    },
+
+    async updateStatus(id_pedido: number, nuevoEstado: string) {
+      try {
+        const res = await api.patch('/cliente/estado', {
+          id_pedido,
+          nuevoEstado
+        })
+        await this.pedidos_admin()
+        return await res.data
+      } catch (error) {
+        console.error('Error actualizando estado:', error)
+        throw error
+      }
+    },
+
+    async enviarNotificacion(titulo: string, cuerpo: string) {
+      if (Notification.permission !== 'granted') return
+      const registration = await navigator.serviceWorker.getRegistration()
+      if (registration) {
+        registration.showNotification(titulo, {
+          body: cuerpo,
+          icon: '/logo-icon.png',
+          badge: '/logo-icon.png'
+        })
       } else {
-        const [resPuntos] = await Promise.all([api.get(`/cliente/puntos/${user.id}`), update_pedidos()])
-        pedido.value = await resPuntos.data.data
+        new Notification(titulo, { body: cuerpo, icon: '/logo-icon.png' })
       }
-    } catch (error) {
-      console.error('Error cargando datos del cliente:', error)
     }
   }
-
-  const update_pedidos = async () => {
-    const user = userStore()
-    try {
-      const res = await api.get(`/cliente/pedidos-agrupados/${user.id}`)
-
-      pedidos.value = await res.data
-    } catch (error) {
-      console.error('Error cargando datos del cliente:', error)
-    }
-  }
-
-  const canjear = async (idSabor: number) => {
-    const user = userStore()
-    try {
-      const res = await api.post('/cliente/canjear', {
-        userId: user.id,
-        idSabor: idSabor
-      })
-
-      await fetchClientData()
-      return await res.data
-    } catch (error) {
-      console.error('Error al canjear:', error)
-      throw error
-    }
-  }
-
-  const pedidos_admin = async () => {
-    try {
-      const res = await api.get('/pedidos')
-      pedidos.value = await res.data
-    } catch (error) {
-      console.error('Error al canjear:', error)
-      throw error
-    }
-  }
-
-  const updateStatus = async (id_pedido: number, nuevoEstado: string) => {
-    try {
-      const res = await api.patch('/cliente/estado', {
-        id_pedido,
-        nuevoEstado
-      })
-
-      await pedidos_admin()
-      return await res.data
-    } catch (error) {
-      console.error('Error actualizando estado:', error)
-      throw error
-    }
-  }
-  const enviarNotificacion = async (titulo: string, cuerpo: string) => {
-    if (Notification.permission !== 'granted') return
-
-    const registration = await navigator.serviceWorker.getRegistration()
-    if (registration) {
-      registration.showNotification(titulo, {
-        body: cuerpo,
-        icon: '/logo-icon.png',
-        badge: '/logo-icon.png'
-      })
-    } else {
-      new Notification(titulo, { body: cuerpo, icon: '/logo-icon.png' })
-    }
-  }
-
-  return { pedido, pedidos, fetchClientData, update_pedidos, canjear, updateStatus, initSocket, pedidos_admin }
 })

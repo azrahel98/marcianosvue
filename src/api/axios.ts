@@ -3,8 +3,8 @@ import { jwtDecode } from 'jwt-decode'
 import { userStore } from '@store/user'
 
 const api = axios.create({
+  // baseURL: 'https://api.odeploy.work',
   baseURL: 'https://api.odeploy.work',
-  // baseURL: 'http://127.0.0.1:8080',
   headers: {
     'Content-Type': 'application/json'
   }
