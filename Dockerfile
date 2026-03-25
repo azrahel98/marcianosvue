@@ -13,5 +13,5 @@ COPY --from=build /app/dist /usr/share/nginx/html
 # Se copia tu config a conf.d para no romper el nginx.conf global
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-EXPOSE 8081
+EXPOSE 8082
 CMD ["nginx", "-g", "daemon off;"]
