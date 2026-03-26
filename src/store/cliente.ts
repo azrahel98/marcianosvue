@@ -7,7 +7,8 @@ import { useSaboresStore } from './sabores'
 export const useClientStore = defineStore('clientStore', {
   state: () => ({
     pedido: {} as any,
-    pedidos: [] as any[]
+    pedidos: [] as any[],
+    loading: false
   }),
   actions: {
     initSocket() {
@@ -57,6 +58,7 @@ export const useClientStore = defineStore('clientStore', {
 
     async fetchClientData() {
       const user = userStore()
+      this.loading = true
       try {
         if (user.isAdmin) {
           await this.pedidos_admin()
@@ -66,6 +68,8 @@ export const useClientStore = defineStore('clientStore', {
         }
       } catch (error) {
         console.error('Error cargando datos del cliente:', error)
+      } finally {
+        this.loading = false
       }
     },
 
@@ -95,12 +99,15 @@ export const useClientStore = defineStore('clientStore', {
     },
 
     async pedidos_admin() {
+      this.loading = true
       try {
         const res = await api.get('/pedidos')
         this.pedidos = await res.data
       } catch (error) {
         console.error('Error al canjear:', error)
         throw error
+      } finally {
+        this.loading = false
       }
     },
 

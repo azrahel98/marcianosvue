@@ -6,7 +6,37 @@ const clientStore = useClientStore()
 </script>
 
 <template>
-  <div v-if="clientStore.pedidos.length > 0" class="mb-6 mt-4 relative z-10">
+  <!-- Skeleton loading -->
+  <div v-if="clientStore.loading" class="mb-6 mt-4 relative z-10">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 px-1">
+      <div class="h-4 w-40 bg-gray-200 rounded animate-pulse"></div>
+      <div class="h-6 w-24 bg-gray-100 rounded-lg animate-pulse"></div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+      <div v-for="i in 8" :key="i" class="bg-white/90 p-3.5 rounded-xl shadow-sm border border-gray-100/80 flex flex-col gap-3 h-44">
+        <div class="flex justify-between items-start">
+          <div class="space-y-1.5">
+            <div class="flex gap-1.5">
+              <div class="h-5 w-14 bg-gray-200 rounded-md animate-pulse"></div>
+              <div class="h-5 w-16 bg-gray-100 rounded-md animate-pulse"></div>
+            </div>
+            <div class="h-3 w-28 bg-gray-100 rounded animate-pulse"></div>
+          </div>
+          <div class="w-9 h-9 bg-gray-200 rounded-xl animate-pulse"></div>
+        </div>
+        <div class="bg-gray-50 rounded-lg p-2 border border-gray-100/50 flex-1 space-y-1.5">
+          <div class="h-3 w-full bg-gray-200 rounded animate-pulse"></div>
+          <div class="h-3 w-4/5 bg-gray-200 rounded animate-pulse"></div>
+        </div>
+        <div class="bg-gray-50 px-3 py-2 rounded-lg border border-gray-100 flex justify-between">
+          <div class="h-3 w-8 bg-gray-200 rounded animate-pulse"></div>
+          <div class="h-4 w-14 bg-gray-200 rounded animate-pulse"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div v-else-if="clientStore.pedidos.length > 0" class="mb-6 mt-4 relative z-10">
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 px-1">
       <h2 class="text-sm font-bold text-gray-700 tracking-tight flex items-center gap-1.5">
         <span class="text-base">🛍️</span> Historial de Pedidos
@@ -25,9 +55,9 @@ const clientStore = useClientStore()
             <div class="flex items-center gap-1.5 mb-1.5 flex-wrap">
               <span class="text-[11px] font-bold text-gray-800 bg-gray-50 px-2 py-0.5 rounded-md border border-gray-100">#{{ pedido.id_pedido }}</span>
               <span
-                class="px-1.5 py-0.5 text-[9px] font-bold rounded-md uppercase tracking-wider border"
+                class="inline-flex items-center gap-1 px-1.5 py-0.5 text-[9px] font-bold rounded-md uppercase tracking-wider border"
                 :class="{
-                  'bg-orange-50 text-orange-600 border-orange-200 animate-pulse': pedido.estado === 'pendiente',
+                  'bg-orange-50 text-orange-600 border-orange-200': pedido.estado === 'pendiente',
                   'bg-green-50 text-green-600 border-green-200': pedido.estado === 'completado',
                   'bg-red-50 text-red-600 border-red-200': pedido.estado === 'cancelado',
                   'bg-blue-50 text-blue-600 border-blue-200': pedido.estado === 'porcobrar',
@@ -35,6 +65,16 @@ const clientStore = useClientStore()
                   'bg-gray-50 text-gray-600 border-gray-200': pedido.estado === 'acuenta'
                 }"
               >
+                <span class="w-1.5 h-1.5 rounded-full shrink-0"
+                  :class="{
+                    'bg-orange-400 animate-pulse': pedido.estado === 'pendiente',
+                    'bg-green-400': pedido.estado === 'completado',
+                    'bg-red-400': pedido.estado === 'cancelado',
+                    'bg-blue-400': pedido.estado === 'porcobrar',
+                    'bg-purple-400': pedido.estado === 'canje',
+                    'bg-gray-400': pedido.estado === 'acuenta'
+                  }"
+                ></span>
                 {{ pedido.estado }}
               </span>
             </div>

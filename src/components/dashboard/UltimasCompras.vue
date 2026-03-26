@@ -9,7 +9,27 @@
       </RouterLink>
     </div>
 
-    <div class="relative space-y-3 before:absolute before:inset-0 before:ml-[1rem] before:-translate-x-px before:h-full before:w-0.5 before:bg-linear-to-b before:from-gray-200 before:via-gray-100 before:to-transparent">
+    <!-- Skeleton loading -->
+    <div v-if="store.loading" class="space-y-3">
+      <div v-for="i in 3" :key="i" class="flex items-start gap-3">
+        <div class="w-8 h-8 shrink-0 rounded-full bg-gray-200 animate-pulse"></div>
+        <div class="flex-1 bg-gray-50 p-3 rounded-xl border border-gray-100 space-y-2">
+          <div class="flex justify-between items-start">
+            <div class="space-y-1.5">
+              <div class="h-3 w-24 bg-gray-200 rounded animate-pulse"></div>
+              <div class="h-2.5 w-16 bg-gray-100 rounded animate-pulse"></div>
+            </div>
+            <div class="h-6 w-16 bg-gray-200 rounded-lg animate-pulse"></div>
+          </div>
+          <div class="bg-gray-100/80 rounded-lg p-2 space-y-1.5">
+            <div class="h-2.5 w-full bg-gray-200 rounded animate-pulse"></div>
+            <div class="h-2.5 w-3/4 bg-gray-200 rounded animate-pulse"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div v-else class="relative space-y-3 before:absolute before:inset-0 before:ml-4 before:-translate-x-px before:h-full before:w-0.5 before:bg-linear-to-b before:from-gray-200 before:via-gray-100 before:to-transparent">
 
       <div
         v-for="(pedido) in store.pedidos.slice(0, 5)"
@@ -39,9 +59,9 @@
                <div class="flex items-center gap-2 mb-1 flex-wrap">
                  <span class="text-xs font-bold text-gray-800">Pedido #{{ pedido.id_pedido }}</span>
                  <span
-                   class="px-1.5 py-0.5 text-[9px] font-bold rounded-md uppercase tracking-wider border"
+                   class="inline-flex items-center gap-1 px-1.5 py-0.5 text-[9px] font-bold rounded-md uppercase tracking-wider border"
                    :class="{
-                     'bg-orange-50 text-orange-600 border-orange-200 animate-pulse': pedido.estado === 'pendiente',
+                     'bg-orange-50 text-orange-600 border-orange-200': pedido.estado === 'pendiente',
                      'bg-green-50 text-green-600 border-green-200': pedido.estado === 'completado',
                      'bg-red-50 text-red-600 border-red-200': pedido.estado === 'cancelado',
                      'bg-blue-50 text-blue-600 border-blue-200': pedido.estado === 'porcobrar',
@@ -49,6 +69,16 @@
                      'bg-gray-50 text-gray-600 border-gray-200': pedido.estado === 'acuenta'
                    }"
                  >
+                   <span class="w-1.5 h-1.5 rounded-full shrink-0"
+                     :class="{
+                       'bg-orange-400 animate-pulse': pedido.estado === 'pendiente',
+                       'bg-green-400': pedido.estado === 'completado',
+                       'bg-red-400': pedido.estado === 'cancelado',
+                       'bg-blue-400': pedido.estado === 'porcobrar',
+                       'bg-purple-400': pedido.estado === 'canje',
+                       'bg-gray-400': pedido.estado === 'acuenta'
+                     }"
+                   ></span>
                    {{ pedido.estado }}
                  </span>
                </div>

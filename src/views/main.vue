@@ -17,10 +17,10 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="flex min-h-screen w-full bg-gray-50 font-sans text-gray-900">
+  <div class="flex h-screen overflow-hidden w-full bg-gray-50 font-sans text-gray-900">
     <Sidebar />
 
-    <main class="flex-1 min-w-0 pb-20 md:pb-0 w-full bg-linear-to-br from-pink-50/40 via-white to-cyan-50/40 min-h-screen">
+    <main class="flex-1 min-w-0 overflow-hidden bg-linear-to-br from-pink-50/40 via-white to-cyan-50/40">
       <RouterView />
     </main>
   </div>

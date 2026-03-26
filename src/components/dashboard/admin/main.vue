@@ -124,7 +124,7 @@ const clientsProgress = computed(() => {
 </script>
 
 <template>
-  <main class="max-w-7xl w-full mx-auto px-4 sm:px-6 py-4 pb-16">
+  <main class="max-w-7xl w-full mx-auto px-4 sm:px-6 pt-5 pb-24">
     <div class="mb-5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
       <div class="animate-fade-in relative z-10 whitespace-nowrap">
         <h1 class="text-lg md:text-xl font-bold bg-linear-to-r from-pink-600 to-cyan-600 bg-clip-text text-transparent tracking-tight pb-0.5 flex items-center gap-1.5">
@@ -211,86 +211,135 @@ const clientsProgress = computed(() => {
 
     <!-- Data Table -->
     <div class="bg-white rounded-xl shadow-sm border border-gray-100/80 overflow-hidden relative z-10 flex flex-col">
-      <div class="overflow-x-auto overflow-y-auto max-h-[65vh] w-full custom-scrollbar">
+      <div class="overflow-x-auto overflow-y-auto max-h-[40vh] w-full custom-scrollbar">
         <table class="w-full text-xs text-left whitespace-nowrap min-w-max">
-          <thead class="text-[10px] text-gray-500 bg-gray-50/95 backdrop-blur-md uppercase tracking-wider sticky top-0 z-20 shadow-sm border-b border-gray-200">
+          <thead class="text-[10px] text-gray-500 bg-gray-50/95 uppercase tracking-wider sticky top-0 z-10 border-b border-gray-200">
             <tr>
-              <th scope="col" class="px-4 py-3 font-bold">ID / Cliente</th>
-              <th scope="col" class="px-4 py-3 font-bold">Fecha</th>
-              <th scope="col" class="px-4 py-3 font-bold">Detalle del Pedido</th>
-              <th scope="col" class="px-4 py-3 font-bold text-right">Total</th>
-              <th scope="col" class="px-4 py-3 font-bold text-center">Estado</th>
+              <th scope="col" class="px-4 py-3.5 font-bold">ID / Cliente</th>
+              <th scope="col" class="px-4 py-3.5 font-bold">Fecha</th>
+              <th scope="col" class="px-4 py-3.5 font-bold">Detalle del Pedido</th>
+              <th scope="col" class="px-4 py-3.5 font-bold text-right">Total</th>
+              <th scope="col" class="px-4 py-3.5 font-bold text-center">Estado</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-gray-50">
-            <tr v-for="pedido in filteredPedidos" :key="pedido.id_pedido" class="hover:bg-gray-50/50 transition-colors group">
-              <td class="px-4 py-2.5 relative">
-                <div class="flex flex-col gap-0.5">
-                  <div class="flex items-center gap-1.5">
-                    <span class="font-bold text-gray-900 bg-gray-100 px-1.5 py-0.5 rounded text-[11px] border border-gray-200/50">#{{ pedido.id_pedido }}</span>
-                    <span v-if="pedido.es_canje" class="px-1 py-0.5 rounded text-[8px] font-bold bg-pink-100 text-pink-700 border border-pink-200">🎁 Canje</span>
+          <tbody class="divide-y divide-gray-100">
+            <!-- Skeleton rows while loading -->
+            <template v-if="store.loading">
+              <tr v-for="i in 6" :key="i" class="animate-pulse">
+                <td class="px-4 py-3.5">
+                  <div class="flex flex-col gap-1.5">
+                    <div class="flex items-center gap-1.5">
+                      <div class="h-4 w-10 bg-gray-200 rounded"></div>
+                    </div>
+                    <div class="h-3 w-32 bg-gray-100 rounded"></div>
+                    <div class="h-2.5 w-24 bg-gray-100 rounded"></div>
                   </div>
-                  <span class="font-medium text-gray-700 text-xs truncate max-w-[180px] mt-0.5">{{ pedido.usuario || 'Sin nombre' }}</span>
-                  <span class="text-[10px] text-gray-400 font-medium truncate max-w-[180px]">{{ pedido.requisitos || 'Sin requisitos extras' }}</span>
-                </div>
-              </td>
-
-              <td class="px-4 py-2.5">
-                <div class="flex items-center gap-1.5 text-[11px] font-medium text-gray-500">
-                  <span class="text-xs opacity-60">📅</span>
-                  <span>{{ format(new Date(pedido.fecha), 'dd/MM/yyyy') }}<br /><span class="text-[10px] text-gray-400">{{ format(new Date(pedido.fecha), 'HH:mm') }}</span></span>
-                </div>
-              </td>
-
-              <td class="px-4 py-2.5">
-                <div class="flex flex-col gap-1 min-w-[180px]">
-                  <div v-for="(item, index) in pedido.detalle" :key="index" class="flex items-center gap-1.5 text-[11px] group/item">
-                    <span class="font-bold text-gray-600 bg-white border border-gray-100 px-1 py-0.5 rounded text-[10px]">x{{ item.cantidad }}</span>
-                    <span class="font-medium text-gray-700 truncate group-hover/item:text-pink-600 transition-colors">{{ item.sabor }}</span>
-                    <span class="text-[10px] font-medium text-gray-400 ml-auto bg-gray-50 px-1 py-0.5 rounded">
-                      {{ Number(item.subtotal) > 0 ? `S/ ${Number(item.subtotal).toFixed(2)}` : 'Gratis' }}
-                    </span>
+                </td>
+                <td class="px-4 py-3.5">
+                  <div class="h-3 w-20 bg-gray-200 rounded"></div>
+                  <div class="h-2.5 w-10 bg-gray-100 rounded mt-1"></div>
+                </td>
+                <td class="px-4 py-3.5">
+                  <div class="flex flex-col gap-1.5 min-w-[180px]">
+                    <div class="h-3 w-full bg-gray-200 rounded"></div>
+                    <div class="h-3 w-3/4 bg-gray-100 rounded"></div>
                   </div>
-                </div>
-              </td>
+                </td>
+                <td class="px-4 py-3.5 text-right">
+                  <div class="h-6 w-16 bg-gray-200 rounded-lg ml-auto"></div>
+                </td>
+                <td class="px-4 py-3.5">
+                  <div class="flex flex-col items-center gap-1.5">
+                    <div class="h-6 w-24 bg-gray-200 rounded-lg"></div>
+                    <div class="h-5 w-24 bg-gray-100 rounded-md"></div>
+                  </div>
+                </td>
+              </tr>
+            </template>
 
-              <td class="px-4 py-2.5 text-right">
-                <span class="font-bold text-gray-900 bg-gray-50 px-2.5 py-1 rounded-lg border border-gray-100 inline-block text-xs">
-                  S/ {{ Number(pedido.total_pedido).toFixed(2) }}
-                </span>
-              </td>
+            <template v-else>
+              <tr v-for="pedido in filteredPedidos" :key="pedido.id_pedido" class="transition-colors group hover:bg-gray-50/70 border-l-2 border-l-transparent hover:border-l-pink-300">
+                <td class="px-4 py-3 relative">
+                  <div class="flex flex-col gap-0.5">
+                    <div class="flex items-center gap-1.5">
+                      <span class="font-bold text-gray-900 bg-gray-100 px-1.5 py-0.5 rounded text-[11px] border border-gray-200/50">#{{ pedido.id_pedido }}</span>
+                      <span v-if="pedido.es_canje" class="px-1 py-0.5 rounded text-[8px] font-bold bg-pink-100 text-pink-700 border border-pink-200">🎁 Canje</span>
+                    </div>
+                    <span class="font-semibold text-gray-700 text-xs truncate max-w-[180px] mt-0.5 group-hover:text-gray-900 transition-colors">{{ pedido.usuario || 'Sin nombre' }}</span>
+                    <span class="text-[10px] text-gray-400 font-medium truncate max-w-[180px]">{{ pedido.requisitos || 'Sin requisitos extras' }}</span>
+                  </div>
+                </td>
 
-              <td class="px-4 py-2.5 h-full">
-                <div class="flex flex-col items-center justify-center gap-1.5 w-full h-full">
+                <td class="px-4 py-3">
+                  <div class="flex flex-col text-[11px] font-medium text-gray-500">
+                    <span>{{ format(new Date(pedido.fecha), 'dd/MM/yyyy') }}</span>
+                    <span class="text-[10px] text-gray-400 mt-0.5">{{ format(new Date(pedido.fecha), 'HH:mm') }}</span>
+                  </div>
+                </td>
+
+                <td class="px-4 py-3">
+                  <div class="flex flex-col gap-1 min-w-[180px]">
+                    <div v-for="(item, index) in pedido.detalle" :key="index" class="flex items-center gap-1.5 text-[11px] group/item">
+                      <span class="font-bold text-gray-600 bg-white border border-gray-100 px-1 py-0.5 rounded text-[10px]">x{{ item.cantidad }}</span>
+                      <span class="font-medium text-gray-700 truncate group-hover/item:text-pink-600 transition-colors">{{ item.sabor }}</span>
+                      <span class="text-[10px] font-medium text-gray-400 ml-auto bg-gray-50 px-1 py-0.5 rounded">
+                        {{ Number(item.subtotal) > 0 ? `S/ ${Number(item.subtotal).toFixed(2)}` : 'Gratis' }}
+                      </span>
+                    </div>
+                  </div>
+                </td>
+
+                <td class="px-4 py-3 text-right">
                   <span
-                    class="px-2.5 py-1 text-[9px] font-bold rounded-lg uppercase tracking-wider border w-[95px] text-center"
-                    :class="{
-                      'bg-orange-50 text-orange-600 border-orange-200': pedido.estado === 'pendiente',
-                      'bg-green-50 text-green-600 border-green-200': pedido.estado === 'completado',
-                      'bg-red-50 text-red-600 border-red-200': pedido.estado === 'cancelado',
-                      'bg-blue-50 text-blue-600 border-blue-200': pedido.estado === 'porcobrar',
-                      'bg-purple-50 text-purple-600 border-purple-200': pedido.estado === 'canje',
-                      'bg-gray-50 text-gray-600 border-gray-200': pedido.estado === 'acuenta'
-                    }"
+                    class="font-bold text-gray-900 bg-gray-50 px-2.5 py-1 rounded-lg border border-gray-100 inline-block text-xs group-hover:bg-pink-50 group-hover:border-pink-100 group-hover:text-pink-800 transition-colors"
                   >
-                    {{ pedido.estado }}
+                    S/ {{ Number(pedido.total_pedido).toFixed(2) }}
                   </span>
-                  <button
-                    @click="openStatusModal(pedido)"
-                    class="text-[10px] font-bold text-cyan-600 hover:text-white bg-cyan-50 hover:bg-cyan-500 px-2 py-0.5 rounded-md transition-all border border-cyan-100 hover:border-cyan-500 active:scale-95 flex items-center justify-center gap-1 w-[95px]"
-                  >
-                    ✏️ Mover
-                  </button>
-                </div>
-              </td>
-            </tr>
-            <tr v-if="filteredPedidos.length === 0">
-              <td colspan="5" class="px-4 py-12 text-center">
-                <div class="text-3xl mb-3 opacity-50">📋</div>
-                <h3 class="text-sm font-bold text-gray-800 tracking-tight">No se encontraron pedidos</h3>
-                <p class="text-gray-500 font-medium text-xs mt-0.5">No hay elementos bajo este filtro</p>
-              </td>
-            </tr>
+                </td>
+
+                <td class="px-4 py-3 h-full">
+                  <div class="flex flex-col items-center justify-center gap-1.5 w-full h-full">
+                    <span
+                      class="inline-flex items-center gap-1 px-2.5 py-1 text-[9px] font-bold rounded-lg uppercase tracking-wider border w-[100px] justify-center"
+                      :class="{
+                        'bg-orange-50 text-orange-600 border-orange-200': pedido.estado === 'pendiente',
+                        'bg-green-50 text-green-600 border-green-200': pedido.estado === 'completado',
+                        'bg-red-50 text-red-600 border-red-200': pedido.estado === 'cancelado',
+                        'bg-blue-50 text-blue-600 border-blue-200': pedido.estado === 'porcobrar',
+                        'bg-purple-50 text-purple-600 border-purple-200': pedido.estado === 'canje',
+                        'bg-gray-50 text-gray-600 border-gray-200': pedido.estado === 'acuenta'
+                      }"
+                    >
+                      <span
+                        class="w-1.5 h-1.5 rounded-full shrink-0"
+                        :class="{
+                          'bg-orange-400 animate-pulse': pedido.estado === 'pendiente',
+                          'bg-green-400': pedido.estado === 'completado',
+                          'bg-red-400': pedido.estado === 'cancelado',
+                          'bg-blue-400': pedido.estado === 'porcobrar',
+                          'bg-purple-400': pedido.estado === 'canje',
+                          'bg-gray-400': pedido.estado === 'acuenta'
+                        }"
+                      ></span>
+                      {{ pedido.estado }}
+                    </span>
+                    <button
+                      @click="openStatusModal(pedido)"
+                      class="text-[10px] font-bold text-cyan-600 hover:text-white bg-cyan-50 hover:bg-cyan-500 px-2 py-0.5 rounded-md transition-all border border-cyan-100 hover:border-cyan-500 active:scale-95 flex items-center justify-center gap-1 w-[100px]"
+                    >
+                      ✏️ Mover
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr v-if="filteredPedidos.length === 0">
+                <td colspan="5" class="px-4 py-12 text-center">
+                  <div class="text-3xl mb-3 opacity-50">📋</div>
+                  <h3 class="text-sm font-bold text-gray-800 tracking-tight">No se encontraron pedidos</h3>
+                  <p class="text-gray-500 font-medium text-xs mt-0.5">No hay elementos bajo este filtro</p>
+                </td>
+              </tr>
+            </template>
           </tbody>
         </table>
       </div>
@@ -306,65 +355,106 @@ const clientsProgress = computed(() => {
       </div>
 
       <div class="bg-white rounded-xl shadow-sm border border-gray-100/80 overflow-hidden relative z-10 flex flex-col">
-        <div class="overflow-x-auto overflow-y-auto max-h-[400px] w-full custom-scrollbar">
+        <div class="overflow-x-auto overflow-y-auto max-h-[30vh] w-full custom-scrollbar">
           <table class="w-full text-xs text-left whitespace-nowrap min-w-max">
-            <thead class="text-[10px] text-gray-500 bg-gray-50/95 backdrop-blur-md uppercase tracking-wider sticky top-0 z-20 shadow-sm border-b border-gray-200">
+            <thead class="text-[10px] text-gray-500 bg-gray-50/95 uppercase tracking-wider sticky top-0 z-10 border-b border-gray-200">
               <tr>
-                <th scope="col" class="px-4 py-3 font-bold">Cliente</th>
-                <th scope="col" class="px-4 py-3 font-bold text-center">Helados</th>
-                <th scope="col" class="px-4 py-3 font-bold text-center">Progreso</th>
-                <th scope="col" class="px-4 py-3 font-bold text-center">A Canjear</th>
-                <th scope="col" class="px-4 py-3 font-bold text-right">Inversión</th>
+                <th scope="col" class="px-4 py-3.5 font-bold">Cliente</th>
+                <th scope="col" class="px-4 py-3.5 font-bold text-center">Helados</th>
+                <th scope="col" class="px-4 py-3.5 font-bold text-center">Progreso</th>
+                <th scope="col" class="px-4 py-3.5 font-bold text-center">A Canjear</th>
+                <th scope="col" class="px-4 py-3.5 font-bold text-right">Inversión</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-gray-50">
-              <tr v-for="(cliente, index) in clientsProgress" :key="cliente.usuario" class="hover:bg-gray-50/50 transition-colors group">
-                <td class="px-4 py-2.5 relative">
-                  <div class="flex items-center gap-2">
-                    <div class="w-6 h-6 rounded-full bg-linear-to-tr from-pink-100 to-cyan-100 flex items-center justify-center text-xs font-bold text-gray-600">
-                      <span v-if="index === 0">👑</span>
-                      <span v-else-if="index === 1">🥈</span>
-                      <span v-else-if="index === 2">🥉</span>
-                      <span v-else>{{ cliente.usuario.charAt(0).toUpperCase() }}</span>
+            <tbody class="divide-y divide-gray-100">
+              <!-- Skeleton rows -->
+              <template v-if="store.loading">
+                <tr v-for="i in 5" :key="i" class="animate-pulse">
+                  <td class="px-4 py-3">
+                    <div class="flex items-center gap-2">
+                      <div class="w-7 h-7 rounded-full bg-gray-200"></div>
+                      <div class="flex flex-col gap-1">
+                        <div class="h-3 w-28 bg-gray-200 rounded"></div>
+                        <div class="h-2.5 w-16 bg-gray-100 rounded"></div>
+                      </div>
                     </div>
-                    <div class="flex flex-col">
-                      <span class="font-medium text-gray-800 text-xs">{{ cliente.usuario }}</span>
-                      <span class="text-[10px] text-gray-400 font-medium">{{ format(new Date(cliente.ultPedido), 'dd/MM/yyyy') }}</span>
+                  </td>
+                  <td class="px-4 py-3 text-center">
+                    <div class="h-5 w-16 bg-gray-200 rounded-lg mx-auto"></div>
+                  </td>
+                  <td class="px-4 py-3 w-48">
+                    <div class="flex flex-col gap-1.5 w-full">
+                      <div class="flex justify-between">
+                        <div class="h-2.5 w-8 bg-gray-200 rounded"></div>
+                        <div class="h-2.5 w-12 bg-gray-100 rounded"></div>
+                      </div>
+                      <div class="w-full bg-gray-100 h-1.5 rounded-full"></div>
                     </div>
-                  </div>
-                </td>
-                <td class="px-4 py-2.5 text-center">
-                  <span class="font-bold text-gray-700 bg-gray-100 px-2 py-0.5 rounded-lg text-[11px]">{{ cliente.heladosComprados }} 🍦</span>
-                </td>
-                <td class="px-4 py-2.5 w-48">
-                  <div class="flex flex-col gap-1 w-full">
-                    <div class="flex justify-between items-center">
-                      <span class="text-[10px] font-bold text-cyan-600">{{ cliente.puntos }}/10</span>
-                      <span class="text-[10px] font-medium text-gray-400">{{ cliente.faltan }} faltan</span>
+                  </td>
+                  <td class="px-4 py-3 text-center">
+                    <div class="h-5 w-14 bg-gray-100 rounded-lg mx-auto"></div>
+                  </td>
+                  <td class="px-4 py-3 text-right">
+                    <div class="h-3 w-16 bg-gray-200 rounded ml-auto"></div>
+                  </td>
+                </tr>
+              </template>
+
+              <template v-else>
+                <tr
+                  v-for="(cliente, index) in clientsProgress"
+                  :key="cliente.usuario"
+                  class="transition-colors group hover:bg-gray-50/70 border-l-2 border-l-transparent hover:border-l-amber-300"
+                >
+                  <td class="px-4 py-3 relative">
+                    <div class="flex items-center gap-2">
+                      <div
+                        class="w-7 h-7 rounded-full bg-linear-to-tr from-pink-100 to-cyan-100 flex items-center justify-center text-xs font-bold text-gray-600 border border-white shadow-sm"
+                      >
+                        <span v-if="index === 0">👑</span>
+                        <span v-else-if="index === 1">🥈</span>
+                        <span v-else-if="index === 2">🥉</span>
+                        <span v-else>{{ cliente.usuario.charAt(0).toUpperCase() }}</span>
+                      </div>
+                      <div class="flex flex-col">
+                        <span class="font-semibold text-gray-800 text-xs group-hover:text-gray-900 transition-colors">{{ cliente.usuario }}</span>
+                        <span class="text-[10px] text-gray-400 font-medium">{{ format(new Date(cliente.ultPedido), 'dd/MM/yyyy') }}</span>
+                      </div>
                     </div>
-                    <div class="w-full bg-gray-100 h-1.5 rounded-full overflow-hidden border border-gray-200">
-                      <div class="bg-linear-to-r from-cyan-400 to-cyan-500 h-full rounded-full transition-all duration-500" :style="{ width: `${(cliente.puntos / 10) * 100}%` }"></div>
+                  </td>
+                  <td class="px-4 py-3 text-center">
+                    <span class="font-bold text-gray-700 bg-gray-100 px-2 py-0.5 rounded-lg text-[11px] border border-gray-200/50">{{ cliente.heladosComprados }} 🍦</span>
+                  </td>
+                  <td class="px-4 py-3 w-48">
+                    <div class="flex flex-col gap-1 w-full">
+                      <div class="flex justify-between items-center">
+                        <span class="text-[10px] font-bold text-cyan-600">{{ cliente.puntos }}/10</span>
+                        <span class="text-[10px] font-medium text-gray-400">{{ cliente.faltan }} faltan</span>
+                      </div>
+                      <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden border border-gray-200/50">
+                        <div class="bg-linear-to-r from-cyan-400 to-pink-400 h-full rounded-full transition-all duration-700" :style="{ width: `${(cliente.puntos / 10) * 100}%` }"></div>
+                      </div>
                     </div>
-                  </div>
-                </td>
-                <td class="px-4 py-2.5 text-center">
-                  <span
-                    v-if="cliente.canjesDisponibles > 0"
-                    class="px-2 py-0.5 bg-pink-100 text-pink-600 border border-pink-200 rounded-lg font-bold text-[10px] animate-pulse inline-block"
-                  >
-                    ¡{{ cliente.canjesDisponibles }}! 🎁
-                  </span>
-                  <span v-else class="text-gray-400 font-medium text-[11px]">—</span>
-                </td>
-                <td class="px-4 py-2.5 text-right">
-                  <span class="font-bold text-gray-900 text-xs">S/ {{ cliente.totalGastado.toFixed(2) }}</span>
-                </td>
-              </tr>
-              <tr v-if="clientsProgress.length === 0">
-                <td colspan="5" class="px-4 py-10 text-center">
-                  <p class="text-gray-500 font-medium text-xs">No hay clientes registrados con pedidos completados.</p>
-                </td>
-              </tr>
+                  </td>
+                  <td class="px-4 py-3 text-center">
+                    <span
+                      v-if="cliente.canjesDisponibles > 0"
+                      class="px-2 py-0.5 bg-pink-100 text-pink-600 border border-pink-200 rounded-lg font-bold text-[10px] animate-pulse inline-block"
+                    >
+                      ¡{{ cliente.canjesDisponibles }}! 🎁
+                    </span>
+                    <span v-else class="text-gray-300 font-medium text-[11px]">—</span>
+                  </td>
+                  <td class="px-4 py-3 text-right">
+                    <span class="font-bold text-gray-900 text-xs group-hover:text-pink-700 transition-colors">S/ {{ cliente.totalGastado.toFixed(2) }}</span>
+                  </td>
+                </tr>
+                <tr v-if="clientsProgress.length === 0">
+                  <td colspan="5" class="px-4 py-10 text-center">
+                    <p class="text-gray-500 font-medium text-xs">No hay clientes registrados con pedidos completados.</p>
+                  </td>
+                </tr>
+              </template>
             </tbody>
           </table>
         </div>
