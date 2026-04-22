@@ -23,7 +23,7 @@ const isLoading = ref(false)
 </script>
 
 <template>
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 pb-24">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 pb-24 md:pb-4">
     <div>
       <div class="mb-4 flex flex-col md:flex-row md:items-center justify-between gap-3">
         <div class="animate-fade-in relative z-10">
@@ -36,7 +36,7 @@ const isLoading = ref(false)
         <div class="relative group w-full md:w-auto mt-1 md:mt-0">
           <button
             v-if="!user.isAdmin"
-            @click="isModalOpen = true"
+            @click="hasPendingOrder ? null : $router.push('/pos')"
             :disabled="hasPendingOrder"
             class="h-9 md:h-8 w-full md:w-auto px-4 text-xs font-bold rounded-lg shadow-md transition-all flex items-center justify-center gap-1.5"
             :class="

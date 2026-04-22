@@ -28,6 +28,11 @@ const routes: RouteRecordRaw[] = [
         path: '/pedidos',
         name: 'pedidos',
         component: () => import('@views/dash/pedidos.vue')
+      },
+      {
+        path: '/pos',
+        name: 'pos',
+        component: () => import('@views/dash/pos.vue')
       }
     ]
   }

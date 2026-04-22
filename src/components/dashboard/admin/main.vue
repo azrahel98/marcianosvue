@@ -124,7 +124,7 @@ const clientsProgress = computed(() => {
 </script>
 
 <template>
-  <main class="max-w-7xl w-full mx-auto px-4 sm:px-6 pt-5 pb-24">
+  <main class="max-w-7xl w-full mx-auto px-4 sm:px-6 pt-5">
     <div class="mb-5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
       <div class="animate-fade-in relative z-10 whitespace-nowrap">
         <h1 class="text-lg md:text-xl font-bold bg-linear-to-r from-pink-600 to-cyan-600 bg-clip-text text-transparent tracking-tight pb-0.5 flex items-center gap-1.5">

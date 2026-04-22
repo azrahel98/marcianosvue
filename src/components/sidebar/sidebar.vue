@@ -47,6 +47,15 @@ const isActive = (path: string) => route.path === path
           <Icons.ShoppingBag class="w-5 h-5 shrink-0" />
           <span class="flex-1">Mis Pedidos</span>
         </router-link>
+        <router-link
+          v-if="user.isAdmin"
+          to="/pos"
+          class="nav-item flex items-center gap-3 text-sm px-3 py-2.5 rounded-xl font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition-all"
+          :class="isActive('/pos') ? 'bg-blue-50/80 text-blue-600 font-bold hover:bg-blue-100 hover:text-blue-700 shadow-sm border border-blue-100/50' : 'border border-transparent'"
+        >
+          <Icons.ShoppingBag class="w-5 h-5 shrink-0" />
+          <span class="flex-1">Punto de Venta</span>
+        </router-link>
       </nav>
     </div>
 
